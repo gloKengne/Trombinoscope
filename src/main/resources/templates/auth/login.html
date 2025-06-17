@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trombinoscope - Student Directory</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.2);
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+        }
+
+        .home-card {
+            width: 100%;
+            max-width: 800px;
+            padding: 50px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+            margin-top: 15px;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .search-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .search-input {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px 25px;
+            font-size: 18px;
+            border: 3px solid #e1e8ed;
+            border-radius: 50px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 5px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-btn {
+            margin-top: 20px;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close:hover {
+            color: #667eea;
+            transform: scale(1.1);
+        }
+
+        .student-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 25px;
+            border: 5px solid #667eea;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .student-info h3 {
+            color: #333;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .student-info p {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .switch-link {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .switch-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .switch-link a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .welcome-text {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .welcome-text h2 {
+            color: #333;
+            font-size: 2.2em;
+            margin-bottom: 15px;
+        }
+
+        .welcome-text p {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+<div class="floating-shapes">
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+</div>
+
+<!-- Login Page -->
+<div id="loginPage" class="page active">
+    <div class="container">
+        <div class="card auth-card">
+            <div class="logo">
+                <h1>Trombinoscope</h1>
+                <p>Student Directory System</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <div class="switch-link">
+                <a href="#" onclick="showRegister()" >Don't have an account? Register here</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Register Page -->
+<div id="registerPage" class="page">
+    <div class="container">
+        <div class="card auth-card">
+            <div class="logo">
+                <h1>Trombinoscope</h1>
+                <p>Create New Account</p>
+            </div>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Full Name</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+            <div class="switch-link">
+                <a href="#" onclick="showLogin()">Already have an account? Login here</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Home Page -->
+<div id="homePage" class="page">
+    <div class="container">
+        <div class="card home-card">
+            <button class="logout-btn" onclick="logout()">Logout</button>
+            <div class="welcome-text">
+                <h2>Welcome to Trombinoscope</h2>
+                <p>Search for students by ID or name</p>
+            </div>
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="Enter student ID or name...">
+                <br>
+                <button class="search-btn" onclick="searchStudent()">Search Student</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Student Modal -->
+<div id="studentModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img id="studentPhoto" class="student-photo" src="" alt="Student Photo">
+        <div class="student-info">
+            <h3 id="studentName"></h3>
+            <p><strong>ID:</strong> <span id="studentId"></span></p>
+            <p><strong>Email:</strong> <span id="studentEmail"></span></p>
+            <p><strong>Major:</strong> <span id="studentMajor"></span></p>
+            <p><strong>Year:</strong> <span id="studentYear"></span></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Sample student data (replace with your API calls)
+    const students = [
+        {
+            id: "2021001",
+            name: "Alice Johnson",
+            email: "alice.johnson@university.edu",
+            major: "Computer Science",
+            year: "3rd Year",
+            photo: "https://images.unsplash.com/photo-1494790108755-2616b612b5bb?w=150&h=150&fit=crop&crop=face"
+        },
+        {
+            id: "2021002",
+            name: "Bob Smith",
+            email: "bob.smith@university.edu",
+            major: "Engineering",
+            year: "2nd Year",
+            photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+        },
+        {
+            id: "2021003",
+            name: "Carol Davis",
+            email: "carol.davis@university.edu",
+            major: "Mathematics",
+            year: "4th Year",
+            photo: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
+        },
+        {
+            id: "2021004",
+            name: "David Wilson",
+            email: "david.wilson@university.edu",
+            major: "Physics",
+            year: "1st Year",
+            photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
+        }
+    ];
+
+    let currentUser = null;
+
+    // Navigation functions
+    function showLogin() {
+        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+        document.getElementById('loginPage').classList.add('active');
+    }
+
+    function showRegister() {
+        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+        document.getElementById('registerPage').classList.add('active');
+    }
+
+    function showHome() {
+        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+        document.getElementById('homePage').classList.add('active');
+    }
+
+    function logout() {
+        currentUser = null;
+        showLogin();
+        document.getElementById('loginForm').reset();
+    }
+
+    // Form handlers
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+
+        // Here you would typically make an API call to authenticate
+        // For demo purposes, we'll accept any credentials
+        if (email && password) {
+            currentUser = { email: email };
+            showHome();
+        } else {
+            alert('Please enter valid credentials');
+        }
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('registerName').value;
+        const email = document.getElementById('registerEmail').value;
+        const password = document.getElementById('registerPassword').value;
+
+        // Here you would typically make an API call to register
+        // For demo purposes, we'll just show success and redirect to login
+        if (name && email && password) {
+            alert('Registration successful! Please login.');
+            showLogin();
+            document.getElementById('registerForm').reset();
+        } else {
+            alert('Please fill in all fields');
+        }
+    });
+
+    // Search functionality
+    function searchStudent() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+
+        if (!searchTerm) {
+            alert('Please enter a student ID or name to search');
+            return;
+        }
+
+        // Search in the students array
+        const student = students.find(s =>
+            s.id.toLowerCase().includes(searchTerm) ||
+            s.name.toLowerCase().includes(searchTerm)
+        );
+
+        if (student) {
+            showStudentModal(student);
+        } else {
+            alert('Student not found. Please check the ID or name and try again.');
+        }
+    }
+
+    // Modal functions
+    function showStudentModal(student) {
+        document.getElementById('studentPhoto').src = student.photo;
+        document.getElementById('studentName').textContent = student.name;
+        document.getElementById('studentId').textContent = student.id;
+        document.getElementById('studentEmail').textContent = student.email;
+        document.getElementById('studentMajor').textContent = student.major;
+        document.getElementById('studentYear').textContent = student.year;
+
+        document.getElementById('studentModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('studentModal').style.display = 'none';
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('studentModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+
+    // Allow search on Enter key
+    document.getElementById('searchInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            searchStudent();
+        }
+    });
+</script>
+</body>
+</html>
