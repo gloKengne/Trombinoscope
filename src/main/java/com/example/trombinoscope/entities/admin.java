@@ -6,13 +6,11 @@ import lombok.*;
 
 @Entity
 @Data
-@Setter
-@Getter
 @DiscriminatorValue("ADMIN")
-public class admin extends user {
+public class admin extends User {
     public admin(){
         super();
-        this.setRole(role.ADMIN);
+        this.setRole(User.Role.ADMIN);
     }
 
 }

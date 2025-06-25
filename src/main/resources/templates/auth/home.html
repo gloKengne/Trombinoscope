@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -293,6 +293,112 @@
             justify-content: center;
             gap: 20px;
             flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .import-section {
+            background: rgba(240, 147, 251, 0.1);
+            border: 2px dashed #f093fb;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .import-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #764ba2;
+            margin-bottom: 15px;
+        }
+
+        .import-description {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 0.95em;
+        }
+
+        .file-input-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .file-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-input-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #f093fb, #764ba2);
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(240, 147, 251, 0.3);
+        }
+
+        .file-input-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(240, 147, 251, 0.4);
+        }
+
+        .upload-progress {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e1e8ed;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f093fb, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .import-result {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: left;
+        }
+
+        .import-success {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid #22c55e;
+            color: #15803d;
+        }
+
+        .import-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #dc2626;
+        }
+
+        .format-info {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .format-info strong {
+            color: #764ba2;
         }
 
         .action-btn {
@@ -461,9 +567,11 @@
 <nav class="navbar">
     <div class="logo">📚 Trombinoscope</div>
     <div class="user-info">
-        <div class="user-avatar">JD</div>
-        <span>John Doe</span>
-        <button class="logout-btn" onclick="logout()">Logout</button>
+        <div class="user-avatar" th:text="${currentUser.substring(0,1).toUpperCase()}">J</div>
+        <span th:text="${currentUser}">Username</span>
+        <form method="post" action="/logout" style="display: inline;">
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
     </div>
 </nav>
 
@@ -475,15 +583,15 @@
 
             <div class="stats-container">
                 <div class="stat-item">
-                    <div class="stat-number">1,247</div>
+                    <div class="stat-number" th:text="${totalStudents}">1,247</div>
                     <div class="stat-label">Students</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number">45</div>
+                    <div class="stat-number" th:text="${totalPrograms}">45</div>
                     <div class="stat-label">Programs</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number">12</div>
+                    <div class="stat-number" th:text="${totalDepartments}">12</div>
                     <div class="stat-label">Departments</div>
                 </div>
             </div>
@@ -510,9 +618,39 @@
             <button class="action-btn btn-secondary" onclick="showRandomStudent()">
                 <span>🎲</span> Random Student
             </button>
-            <button class="action-btn btn-secondary" onclick="showAllStudents()">
+            <a href="/students" class="action-btn btn-secondary">
                 <span>📋</span> Browse All
-            </button>
+            </a>
+        </div>
+
+        <div class="import-section">
+            <h3 class="import-title">📊 Import Students from Excel</h3>
+            <p class="import-description">
+                Upload an Excel file (.xlsx or .xls) to import multiple students at once.
+            </p>
+
+            <div class="file-input-container">
+                <input type="file" id="excelFile" class="file-input" accept=".xlsx,.xls" onchange="handleFileSelect(event)">
+                <label for="excelFile" class="file-input-label">
+                    <span>📁</span> Choose Excel File
+                </label>
+            </div>
+
+            <div class="upload-progress" id="uploadProgress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p style="margin-top: 10px; color: #666;">Uploading...</p>
+            </div>
+
+            <div class="import-result" id="importResult">
+
+            </div>
+
+            <div class="format-info">
+                <strong>Expected Excel Format:</strong><br>
+                Column A: Matricule | Column B: Name | Column C: Email | Column D: Major | Column E: Year | Column F: Department | Column G: Photo URL
+            </div>
         </div>
     </div>
 </div>
@@ -549,64 +687,185 @@
 </div>
 
 <script>
-    // Sample student data
-    const students = [
-        {
-            id: "2021001",
-            name: "Alice Johnson",
-            email: "alice.johnson@university.edu",
-            major: "Computer Science",
-            year: "3rd Year",
-            department: "Engineering",
-            photo: "https://images.unsplash.com/photo-1494790108755-2616b612b5bb?w=150&h=150&fit=crop&crop=face"
-        },
-        {
-            id: "2021002",
-            name: "Bob Smith",
-            email: "bob.smith@university.edu",
-            major: "Mechanical Engineering",
-            year: "2nd Year",
-            department: "Engineering",
-            photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
-        },
-        {
-            id: "2021003",
-            name: "Carol Davis",
-            email: "carol.davis@university.edu",
-            major: "Mathematics",
-            year: "4th Year",
-            department: "Sciences",
-            photo: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
-        },
-        {
-            id: "2021004",
-            name: "David Wilson",
-            email: "david.wilson@university.edu",
-            major: "Physics",
-            year: "1st Year",
-            department: "Sciences",
-            photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
-        },
-        {
-            id: "2021005",
-            name: "Emma Brown",
-            email: "emma.brown@university.edu",
-            major: "Business Administration",
-            year: "3rd Year",
-            department: "Business",
-            photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face"
-        },
-        {
-            id: "2021006",
-            name: "Frank Miller",
-            email: "frank.miller@university.edu",
-            major: "Electrical Engineering",
-            year: "4th Year",
-            department: "Engineering",
-            photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face"
-        }
-    ];
+    // const searchInput = document.getElementById('searchInput');
+    // const suggestionsDiv = document.getElementById('suggestions');
+    //
+    // // Search input event listeners
+    // searchInput.addEventListener('input', handleSearchInput);
+    // searchInput.addEventListener('keypress', function(e) {
+    //     if (e.key === 'Enter') {
+    //         performSearch();
+    //     }
+    // });
+    //
+    // // Hide suggestions when clicking outside
+    // document.addEventListener('click', function(e) {
+    //     if (!e.target.closest('.search-container')) {
+    //         hideSuggestions();
+    //     }
+    // });
+    //
+    // function handleSearchInput() {
+    //     const query = searchInput.value.trim();
+    //
+    //     if (query.length < 2) {
+    //         hideSuggestions();
+    //         return;
+    //     }
+    //
+    //     // Call Spring Boot API for search suggestions
+    //     fetch(`/api/search?query=${encodeURIComponent(query)}`)
+    //         .then(response => response.json())
+    //         .then(students => {
+    //             if (students.length > 0) {
+    //                 showSuggestions(students);
+    //             } else {
+    //                 hideSuggestions();
+    //             }
+    //         })
+    //         .catch(error => {
+    //             console.error('Search error:', error);
+    //             hideSuggestions();
+    //         });
+    // }
+    //
+    // function showSuggestions(students) {
+    //     suggestionsDiv.innerHTML = students.map(student => `
+    //             <div class="suggestion-item" onclick="selectStudent('${student.id}')">
+    //                 <div class="suggestion-avatar">${student.name.charAt(0)}</div>
+    //                 <div class="suggestion-info">
+    //                     <div class="suggestion-name">${student.name}</div>
+    //                     <div class="suggestion-id">ID: ${student.id} • ${student.major}</div>
+    //                 </div>
+    //             </div>
+    //         `).join('');
+    //
+    //     suggestionsDiv.style.display = 'block';
+    // }
+    //
+    // function hideSuggestions() {
+    //     suggestionsDiv.style.display = 'none';
+    // }
+    //
+    // function selectStudent(studentId) {
+    //     fetch(`/api/student/${studentId}`)
+    //         .then(response => response.json())
+    //         .then(student => {
+    //             showStudentModal(student);
+    //             searchInput.value = student.name;
+    //             hideSuggestions();
+    //         })
+    //         .catch(error => {
+    //             console.error('Error fetching student:', error);
+    //             alert('Error fetching student information');
+    //         });
+    // }
+    //
+    // function performSearch() {
+    //     const searchTerm = searchInput.value.trim();
+    //
+    //     if (!searchTerm) {
+    //         alert('Please enter a student name or ID to search');
+    //         return;
+    //     }
+    // }
 
+    // Excel file handling functions
+    function handleFileSelect(event) {
+        const file = event.target.files[0];
+        const uploadProgress = document.getElementById('uploadProgress');
+        const importResult = document.getElementById('importResult');
+        const progressFill = document.getElementById('progressFill');
+
+        if (!file) {
+            return;
+        }
+
+        // Validate file type
+        const fileName = file.name.toLowerCase();
+        if (!fileName.endsWith('.xlsx') && !fileName.endsWith('.xls')) {
+            showImportResult(false, 'Please select a valid Excel file (.xlsx or .xls)');
+            return;
+        }
+
+        // Validate file size (max 10MB)
+        if (file.size > 10 * 1024 * 1024) {
+            showImportResult(false, 'File size too large. Please select a file smaller than 10MB.');
+            return;
+        }
+
+        // Show progress
+        uploadProgress.style.display = 'block';
+        importResult.style.display = 'none';
+
+        // Create FormData
+        const formData = new FormData();
+        formData.append('file', file);
+
+        // Simulate progress (since we can't track actual upload progress easily)
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+            progress += Math.random() * 15;
+            if (progress > 90) progress = 90;
+            progressFill.style.width = progress + '%';
+        }, 200);
+
+        // Upload file
+        fetch('/api/import-excel', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                clearInterval(progressInterval);
+                progressFill.style.width = '100%';
+
+                setTimeout(() => {
+
+                    uploadProgress.style.display = 'none';
+                    showImportResult(data.sucess, data.message, data);
+
+                    // Reset file input
+                    event.target.value = '';
+
+                    // If successful, you might want to refresh stats or show updated counts
+                    // if (data.sucess) {
+                    //     setTimeout(() => {
+                    //         location.reload(); // Refresh page to show updated stats
+                    //     }, 2000);
+                    // }
+                }, 500);
+            })
+            .catch(error => {
+                clearInterval(progressInterval);
+                uploadProgress.style.display = 'none';
+                showImportResult(false, 'Upload failed: ' + error.message);
+                event.target.value = '';
+                console.error('Upload error:', error);
+            });
+    }
+
+    function showImportResult(success, message, data = null) {
+        const importResult = document.getElementById('importResult');
+        console.log("success")
+
+        importResult.className = 'import-result ' + (success ? 'import-success' : 'import-error');
+
+        let resultHtml = `<strong>${success ? '✅ Success!' : '❌ Error!'}</strong><br>${message}`;
+
+        if (data && data.details) {
+            resultHtml += `<br><br><strong>Details:</strong><br>${data.details}`;
+        }
+
+        if (data && data.fileName) {
+            resultHtml += `<br><strong>File:</strong> ${data.fileName}`;
+        }
+
+        importResult.innerHTML = resultHtml;
+        importResult.style.display = 'block';
+    }
+
+    // Search functionality
     const searchInput = document.getElementById('searchInput');
     const suggestionsDiv = document.getElementById('suggestions');
 
@@ -626,37 +885,54 @@
     });
 
     function handleSearchInput() {
-        const query = searchInput.value.toLowerCase().trim();
+        const query = searchInput.value.trim();
 
         if (query.length < 2) {
             hideSuggestions();
             return;
         }
 
-        const matches = students.filter(student =>
-            student.name.toLowerCase().includes(query) ||
-            student.id.toLowerCase().includes(query) ||
-            student.major.toLowerCase().includes(query)
-        ).slice(0, 5);
-
-        if (matches.length > 0) {
-            showSuggestions(matches);
-        } else {
-            hideSuggestions();
-        }
+        // Call Spring Boot API for search suggestions
+        fetch(`/api/search?query=${encodeURIComponent(query)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Search request failed');
+                }
+                return response.json();
+            })
+            .then(students => {
+                if (students.length > 0) {
+                    showSuggestions(students);
+                } else {
+                    showNoResults();
+                }
+            })
+            .catch(error => {
+                console.error('Search error:', error);
+                hideSuggestions();
+            });
     }
 
-    function showSuggestions(matches) {
-        suggestionsDiv.innerHTML = matches.map(student => `
-                <div class="suggestion-item" onclick="selectStudent('${student.id}')">
-                    <div class="suggestion-avatar">${student.name.charAt(0)}</div>
-                    <div class="suggestion-info">
-                        <div class="suggestion-name">${student.name}</div>
-                        <div class="suggestion-id">ID: ${student.id} • ${student.major}</div>
-                    </div>
-                </div>
-            `).join('');
+    function showSuggestions(students) {
+        suggestionsDiv.innerHTML = students.map(student => `
+        <div class="suggestion-item" onclick="selectStudent('${student.matricule}')">
+            <div class="suggestion-avatar">${(student.nom || student.name || 'N').charAt(0)}</div>
+            <div class="suggestion-info">
+                <div class="suggestion-name">${student.prenom || ''} ${student.nom || student.name || ''}</div>
+                <div class="suggestion-id">Matricule: ${student.matricule || student.id} • ${student.classe || student.major || ''}</div>
+            </div>
+        </div>
+    `).join('');
 
+        suggestionsDiv.style.display = 'block';
+    }
+
+    function showNoResults() {
+        suggestionsDiv.innerHTML = `
+        <div class="suggestion-item" style="color: #666; font-style: italic;">
+            No students found matching your search
+        </div>
+    `;
         suggestionsDiv.style.display = 'block';
     }
 
@@ -664,67 +940,91 @@
         suggestionsDiv.style.display = 'none';
     }
 
-    function selectStudent(studentId) {
-        const student = students.find(s => s.id === studentId);
-        if (student) {
-            showStudentModal(student);
-            searchInput.value = student.name;
-            hideSuggestions();
-        }
+    function selectStudent(matricule) {
+        fetch(`/api/student/${matricule}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Student not found');
+                }
+                return response.json();
+            })
+            .then(student => {
+                showStudentModal(student);
+                searchInput.value = `${student.prenom || ''} ${student.nom || ''}`.trim();
+                hideSuggestions();
+            })
+            .catch(error => {
+                console.error('Error fetching student:', error);
+                alert('Error fetching student information: ' + error.message);
+            });
     }
 
     function performSearch() {
-        const searchTerm = searchInput.value.toLowerCase().trim();
+        const searchTerm = searchInput.value.trim();
 
         if (!searchTerm) {
             alert('Please enter a student name or ID to search');
             return;
         }
 
-        const student = students.find(s =>
-            s.id.toLowerCase().includes(searchTerm) ||
-            s.name.toLowerCase().includes(searchTerm)
-        );
-
-        if (student) {
-            showStudentModal(student);
-            hideSuggestions();
-        } else {
-            alert('Student not found. Please check the name or ID and try again.');
-        }
+        // Perform search and show first result
+        fetch(`/api/search?query=${encodeURIComponent(searchTerm)}`)
+            .then(response => response.json())
+            .then(students => {
+                if (students.length > 0) {
+                    selectStudent(students[0].matricule || students[0].id);
+                } else {
+                    alert('No students found matching: ' + searchTerm);
+                }
+            })
+            .catch(error => {
+                console.error('Search error:', error);
+                alert('Search failed: ' + error.message);
+            });
     }
 
     function showRandomStudent() {
-        const randomIndex = Math.floor(Math.random() * students.length);
-        const randomStudent = students[randomIndex];
-        showStudentModal(randomStudent);
-    }
-
-    function showAllStudents() {
-        alert('Browse All Students feature will be implemented with pagination in the backend integration.');
+        fetch('/api/student/random')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No students available');
+                }
+                return response.json();
+            })
+            .then(student => {
+                showStudentModal(student);
+            })
+            .catch(error => {
+                console.error('Error fetching random student:', error);
+                alert('Error fetching random student: ' + error.message);
+            });
     }
 
     function showStudentModal(student) {
-        document.getElementById('studentPhoto').src = student.photo;
-        document.getElementById('studentName').textContent = student.name;
-        document.getElementById('studentId').textContent = student.id;
-        document.getElementById('studentEmail').textContent = student.email;
-        document.getElementById('studentMajor').textContent = student.major;
-        document.getElementById('studentYear').textContent = student.year;
-        document.getElementById('studentDepartment').textContent = student.department;
+        // Populate modal with student data
+        document.getElementById('studentName').textContent = `${student.prenom || ''} ${student.nom || ''}`.trim();
+        document.getElementById('studentId').textContent = student.matricule || student.id || '';
+        document.getElementById('studentEmail').textContent = student.email || 'N/A';
+        document.getElementById('studentMajor').textContent = student.classe || student.major || 'N/A';
+        document.getElementById('studentYear').textContent = student.annee || student.year || 'N/A';
+        document.getElementById('studentDepartment').textContent = student.departement || student.department || 'N/A';
 
+        // Set default photo or student photo
+        const photoElement = document.getElementById('studentPhoto');
+        if (student.photo) {
+            photoElement.src = student.photo;
+            photoElement.style.display = 'block';
+        } else {
+            // Create a default avatar with initials
+            photoElement.style.display = 'none';
+        }
+
+        // Show modal
         document.getElementById('studentModal').style.display = 'block';
     }
 
     function closeModal() {
         document.getElementById('studentModal').style.display = 'none';
-    }
-
-    function logout() {
-        if (confirm('Are you sure you want to logout?')) {
-            // Redirect to login page or clear session
-            alert('Logout functionality will be implemented with your authentication system.');
-        }
     }
 
     // Close modal when clicking outside
@@ -735,5 +1035,3 @@
         }
     }
 </script>
-</body>
-</html>
