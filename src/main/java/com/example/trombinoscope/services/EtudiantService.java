@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EtudiantService {
@@ -54,7 +55,27 @@ public class EtudiantService {
     }
 
     public List<Etudiant> searchEtudiant(String nom, String prenom, String matricule) {
-        return etudiantRepository.searchEtudiants(matricule, nom);
+        return etudiantRepository.searchEtudiants(nom, prenom, matricule);
     }
 
+    public List<Etudiant> searchEtudiant2(String params) {
+        return etudiantRepository.findByNomContainingIgnoreCaseOrPrenomContainingIgnoreCaseOrMatriculeContainingIgnoreCase(params, params, params);
+    }
+
+    public List<String> getDistinctClasses() {
+        List<Etudiant.classe> classes = etudiantRepository.findDistinctClasses();
+        return classes.stream()
+                .map(Enum::name)
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    public List<Etudiant> getStudentsByClassName(Etudiant.classe classe) {
+        try {
+            Etudiant.classe classeEnum = Etudiant.classe.valueOf(String.valueOf(classe));
+            return etudiantRepository.findByClasse(classeEnum);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid class name: " + classe);
+        }
+    }
 }

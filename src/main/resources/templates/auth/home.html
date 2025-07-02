@@ -379,17 +379,6 @@
             text-align: left;
         }
 
-        .import-success {
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid #22c55e;
-            color: #15803d;
-        }
-
-        .import-error {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid #ef4444;
-            color: #dc2626;
-        }
 
         .format-info {
             margin-top: 20px;
@@ -522,6 +511,244 @@
             color: #333;
         }
 
+        .classes-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .classes-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .classes-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .classes-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .dropdown-arrow {
+            font-size: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .classes-btn.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .classes-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            min-width: 280px;
+            max-width: 350px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(25px);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .classes-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .classes-menu::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 30px;
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-bottom: none;
+            border-right: none;
+            transform: rotate(45deg);
+            backdrop-filter: blur(25px);
+        }
+
+        .menu-header {
+            padding: 20px 25px 15px;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(240, 147, 251, 0.05));
+            border-radius: 20px 20px 0 0;
+        }
+
+        .menu-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .menu-subtitle {
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .classes-search {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .classes-search-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            font-size: 14px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .classes-search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .classes-list {
+            padding: 10px 0;
+        }
+
+        .class-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .class-item:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(240, 147, 251, 0.08));
+            transform: translateX(3px);
+        }
+
+        .class-item:last-child {
+            border-bottom: none;
+        }
+
+        .class-info {
+            flex: 1;
+        }
+
+        .class-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .class-details {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .class-count {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            min-width: 35px;
+            text-align: center;
+        }
+
+        .no-classes {
+            padding: 30px 25px;
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
+
+        .no-classes-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+            opacity: 0.5;
+        }
+
+        .menu-footer {
+            padding: 15px 25px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            background: rgba(102, 126, 234, 0.02);
+            border-radius: 0 0 20px 20px;
+        }
+
+        .view-all-classes {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .view-all-classes:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Custom scrollbar for classes menu */
+        .classes-menu::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .classes-menu::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 3px;
+        }
+
+        .classes-menu::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 3px;
+        }
+
+        .classes-menu::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #5a6fd8, #6a4190);
+        }
+
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -558,7 +785,262 @@
             .user-info {
                 gap: 10px;
             }
+            .classes-menu {
+                position: fixed;
+                left: 20px;
+                right: 20px;
+                width: auto;
+            }
         }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background: white;
+            min-width: 200px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .dropdown-menu div {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+        .dropdown-menu div:hover {
+            background-color: #f2f2f2;
+        }
+
+
+        /* Student List Modal Styles */
+        .students-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .students-modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+            max-width: 95%;
+            width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideIn 0.4s ease;
+        }
+
+        .students-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .students-modal-title {
+            font-size: 2em;
+            font-weight: 700;
+            color: #333;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .students-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .students-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .students-table td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #f0f0f0;
+            vertical-align: middle;
+        }
+
+        .students-table tr:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .students-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .student-avatar-small {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        .student-info-cell {
+            display: flex;
+            align-items: center;
+        }
+
+        .student-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 2px;
+        }
+
+        .student-matricule {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn-icon {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-pdf {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .btn-pdf:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+        }
+
+        .btn-delete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        .btn-view {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+        }
+
+        .btn-view:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        .modal-stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .modal-stat-item {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+            padding: 15px 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .modal-stat-number {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .modal-stat-label {
+            color: #666;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .table-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .bulk-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .export-all-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .export-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+
     </style>
 </head>
 <body>
@@ -566,6 +1048,44 @@
 
 <nav class="navbar">
     <div class="logo">📚 Trombinoscope</div>
+    <div class="classes-dropdown">
+        <button class="classes-btn" id="classesBtn" onclick="toggleClassesDropdown()">
+            <span>📚</span> Classes
+            <span class="dropdown-arrow">▼</span>
+        </button>
+        <div class="classes-menu" id="classesMenu">
+            <div class="menu-header">
+                <div class="menu-title">
+                    <span>🎓</span> Available Classes
+                </div>
+                <div class="menu-subtitle">Select a class to view students</div>
+            </div>
+
+            <div class="classes-search">
+                <input
+                        type="text"
+                        class="classes-search-input"
+                        placeholder="Search classes..."
+                        id="classSearchInput"
+                        oninput="filterClasses()"
+                >
+            </div>
+
+            <div class="classes-list" id="classesList">
+                <!-- Classes will be populated here by backend -->
+                <!-- Example structure for frontend reference: -->
+
+                <div th:each="cls : ${classe}" class="class-item" th:onclick="'selectClass(\\'' + ${cls} + \\)''">
+                    <div class="class-info">
+                        <div class="class-name" th:text="${cls}"></div>
+                        <div class="class-details">Level info here</div>
+                    </div>
+                    <div class="class-count">45</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <div class="user-info">
         <div class="user-avatar" th:text="${currentUser.substring(0,1).toUpperCase()}">J</div>
         <span th:text="${currentUser}">Username</span>
@@ -612,15 +1132,24 @@
         </div>
 
         <div class="quick-actions">
-            <button class="action-btn btn-primary" onclick="performSearch()">
-                <span>🔍</span> Search Student
-            </button>
+<!--            <button class="action-btn btn-primary" onclick="performSearch()">-->
+<!--                <span>🔍</span> Search Student-->
+<!--            </button>-->
             <button class="action-btn btn-secondary" onclick="showRandomStudent()">
                 <span>🎲</span> Random Student
             </button>
-            <a href="/students" class="action-btn btn-secondary">
+        <div class="dropdown">
+            <button class="action-btn btn-secondary" onclick="toggleSpecialtyDropdown()">
                 <span>📋</span> Browse All
-            </a>
+            </button>
+            <div class="dropdown-menu" id="specialtyDropDown">
+                <div class="menu-title">
+                    <span>🎓</span> Available Specialties
+                    <!-- specialties will be populated here -->
+                </div>
+                <div class="menu-subtitle">Select a class to view students</div>
+            </div>
+        </div>
         </div>
 
         <div class="import-section">
@@ -655,120 +1184,60 @@
     </div>
 </div>
 
-<!-- Student Modal -->
-<div id="studentModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <img id="studentPhoto" class="student-photo" src="" alt="Student Photo">
-        <div class="student-info">
-            <h3 id="studentName"></h3>
-            <div class="info-item">
-                <span class="info-label">Student ID:</span>
-                <span class="info-value" id="studentId"></span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Email:</span>
-                <span class="info-value" id="studentEmail"></span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Major:</span>
-                <span class="info-value" id="studentMajor"></span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Year:</span>
-                <span class="info-value" id="studentYear"></span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Department:</span>
-                <span class="info-value" id="studentDepartment"></span>
+<!-- Student List Modal -->
+<div id="studentsModal" class="students-modal">
+    <div class="students-modal-content">
+        <div class="students-modal-header">
+            <h2 class="students-modal-title" id="studentsModalTitle">Students</h2>
+            <span class="close" onclick="closeStudentsModal()">&times;</span>
+        </div>
+
+        <div class="modal-stats" id="studentsModalStats">
+            <div class="modal-stat-item">
+                <div class="modal-stat-number" id="totalStudentsCount">0</div>
+                <div class="modal-stat-label">Total Students</div>
             </div>
         </div>
+
+        <div class="table-actions">
+            <div class="bulk-actions">
+                <button class="export-all-btn" onclick="exportAllStudentsPDF()">
+                    <span>📄</span> Export All to PDF
+                </button>
+            </div>
+        </div>
+
+        <table class="students-table">
+            <thead>
+            <tr>
+                <th>Student</th>
+                <th>Matricule</th>
+                <th>Email</th>
+                <th>Class</th>
+                <th>Department</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="studentsTableBody">
+            <!-- Students will be populated here -->
+            </tbody>
+        </table>
     </div>
 </div>
 
+<!-- Modal -->
+<div id="specialtyModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeSpecialtyModal()">&times;</span>
+        <h3 id="modalTitle">Classes</h3>
+        <div id="classListInModal"></div>
+    </div>
+</div>
+
+
+</body>
+
 <script>
-    // const searchInput = document.getElementById('searchInput');
-    // const suggestionsDiv = document.getElementById('suggestions');
-    //
-    // // Search input event listeners
-    // searchInput.addEventListener('input', handleSearchInput);
-    // searchInput.addEventListener('keypress', function(e) {
-    //     if (e.key === 'Enter') {
-    //         performSearch();
-    //     }
-    // });
-    //
-    // // Hide suggestions when clicking outside
-    // document.addEventListener('click', function(e) {
-    //     if (!e.target.closest('.search-container')) {
-    //         hideSuggestions();
-    //     }
-    // });
-    //
-    // function handleSearchInput() {
-    //     const query = searchInput.value.trim();
-    //
-    //     if (query.length < 2) {
-    //         hideSuggestions();
-    //         return;
-    //     }
-    //
-    //     // Call Spring Boot API for search suggestions
-    //     fetch(`/api/search?query=${encodeURIComponent(query)}`)
-    //         .then(response => response.json())
-    //         .then(students => {
-    //             if (students.length > 0) {
-    //                 showSuggestions(students);
-    //             } else {
-    //                 hideSuggestions();
-    //             }
-    //         })
-    //         .catch(error => {
-    //             console.error('Search error:', error);
-    //             hideSuggestions();
-    //         });
-    // }
-    //
-    // function showSuggestions(students) {
-    //     suggestionsDiv.innerHTML = students.map(student => `
-    //             <div class="suggestion-item" onclick="selectStudent('${student.id}')">
-    //                 <div class="suggestion-avatar">${student.name.charAt(0)}</div>
-    //                 <div class="suggestion-info">
-    //                     <div class="suggestion-name">${student.name}</div>
-    //                     <div class="suggestion-id">ID: ${student.id} • ${student.major}</div>
-    //                 </div>
-    //             </div>
-    //         `).join('');
-    //
-    //     suggestionsDiv.style.display = 'block';
-    // }
-    //
-    // function hideSuggestions() {
-    //     suggestionsDiv.style.display = 'none';
-    // }
-    //
-    // function selectStudent(studentId) {
-    //     fetch(`/api/student/${studentId}`)
-    //         .then(response => response.json())
-    //         .then(student => {
-    //             showStudentModal(student);
-    //             searchInput.value = student.name;
-    //             hideSuggestions();
-    //         })
-    //         .catch(error => {
-    //             console.error('Error fetching student:', error);
-    //             alert('Error fetching student information');
-    //         });
-    // }
-    //
-    // function performSearch() {
-    //     const searchTerm = searchInput.value.trim();
-    //
-    //     if (!searchTerm) {
-    //         alert('Please enter a student name or ID to search');
-    //         return;
-    //     }
-    // }
 
     // Excel file handling functions
     function handleFileSelect(event) {
@@ -828,12 +1297,6 @@
                     // Reset file input
                     event.target.value = '';
 
-                    // If successful, you might want to refresh stats or show updated counts
-                    // if (data.sucess) {
-                    //     setTimeout(() => {
-                    //         location.reload(); // Refresh page to show updated stats
-                    //     }, 2000);
-                    // }
                 }, 500);
             })
             .catch(error => {
@@ -866,11 +1329,12 @@
     }
 
     // Search functionality
-    const searchInput = document.getElementById('searchInput');
+    const searchInput = document.getElementById("searchInput");
     const suggestionsDiv = document.getElementById('suggestions');
 
     // Search input event listeners
-    searchInput.addEventListener('input', handleSearchInput);
+    searchInput.addEventListener("input", handleSearchInput);
+
     searchInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             performSearch();
@@ -884,7 +1348,9 @@
         }
     });
 
+
     function handleSearchInput() {
+        console.log("handleSearchInput called");
         const query = searchInput.value.trim();
 
         if (query.length < 2) {
@@ -892,15 +1358,16 @@
             return;
         }
 
-        // Call Spring Boot API for search suggestions
-        fetch(`/api/search?query=${encodeURIComponent(query)}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Search request failed');
-                }
-                return response.json();
-            })
+        let url = '/api/etudiant/search?';
+        url += `params=${encodeURIComponent(query)}`;
+
+
+        fetch(url)
+            .then(response => response.json())
             .then(students => {
+                console.log(JSON.stringify(students)  + "Students 1")
+                console.log(JSON.stringify(students, null, 2));
+
                 if (students.length > 0) {
                     showSuggestions(students);
                 } else {
@@ -914,6 +1381,7 @@
     }
 
     function showSuggestions(students) {
+        console.log(students + "Student")
         suggestionsDiv.innerHTML = students.map(student => `
         <div class="suggestion-item" onclick="selectStudent('${student.matricule}')">
             <div class="suggestion-avatar">${(student.nom || student.name || 'N').charAt(0)}</div>
@@ -949,7 +1417,7 @@
                 return response.json();
             })
             .then(student => {
-                showStudentModal(student);
+                showStudentsModal(student);
                 searchInput.value = `${student.prenom || ''} ${student.nom || ''}`.trim();
                 hideSuggestions();
             })
@@ -962,13 +1430,27 @@
     function performSearch() {
         const searchTerm = searchInput.value.trim();
 
+        console.log("PerformSearch triggered with input:", searchTerm);
+
         if (!searchTerm) {
             alert('Please enter a student name or ID to search');
             return;
         }
 
-        // Perform search and show first result
-        fetch(`/api/search?query=${encodeURIComponent(searchTerm)}`)
+        // Build URL for the correct Spring Boot endpoint
+        let url = '/api/etudiant/search?';
+
+        // If it looks like a matricule (e.g. 123i456), use matricule search
+        if (/^\d+i\d+$/i.test(searchTerm)) {
+            url += `matricule=${encodeURIComponent(searchTerm)}`;
+        } else {
+            // Otherwise, assume it's a name and search both nom and prenom
+            url += `nom=${encodeURIComponent(searchTerm)}&prenom=${encodeURIComponent(searchTerm)}`;
+        }
+
+        console.log("Constructed URL:", url);
+
+        fetch(url)
             .then(response => response.json())
             .then(students => {
                 if (students.length > 0) {
@@ -983,6 +1465,7 @@
             });
     }
 
+
     function showRandomStudent() {
         fetch('/api/student/random')
             .then(response => {
@@ -992,7 +1475,7 @@
                 return response.json();
             })
             .then(student => {
-                showStudentModal(student);
+                showStudentsModal(student);
             })
             .catch(error => {
                 console.error('Error fetching random student:', error);
@@ -1002,12 +1485,21 @@
 
     function showStudentModal(student) {
         // Populate modal with student data
-        document.getElementById('studentName').textContent = `${student.prenom || ''} ${student.nom || ''}`.trim();
-        document.getElementById('studentId').textContent = student.matricule || student.id || '';
-        document.getElementById('studentEmail').textContent = student.email || 'N/A';
-        document.getElementById('studentMajor').textContent = student.classe || student.major || 'N/A';
-        document.getElementById('studentYear').textContent = student.annee || student.year || 'N/A';
-        document.getElementById('studentDepartment').textContent = student.departement || student.department || 'N/A';
+        if (studentName){
+            document.getElementById('studentName').textContent = `${student.prenom || ''} ${student.nom || ''}`.trim();
+        }
+        if(studentId){
+            document.getElementById('studentId').textContent = student.matricule || student.id || '';
+        }
+        if(studentMajor){
+            document.getElementById('studentMajor').textContent = student.classe || 'N/A';
+        }
+        if(studentYear){
+            document.getElementById('studentYear').textContent = student.annee || student.year || 'N/A';
+        }
+        if(studentDepartment){
+            document.getElementById('studentDepartment').textContent = student.departement || student.department || 'N/A';
+        }
 
         // Set default photo or student photo
         const photoElement = document.getElementById('studentPhoto');
@@ -1034,4 +1526,305 @@
             closeModal();
         }
     }
+
+
+    function selectClass(className) {
+        console.log('Selected class:', className);
+
+        fetch(`/api/etudiant/students?classe=${encodeURIComponent(className)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch students');
+                }
+                return response.json();
+            })
+            .then(students => {
+                console.log('Students in class:', students);
+                // You can display these students or navigate to a students page
+                // For now, let's show an alert with the count
+                alert(`Found ${students.length} students in class ${className}`);
+                showStudentsModal(students, className);
+
+                // Close the dropdown
+                document.getElementById('classesMenu').classList.remove('show');
+                document.getElementById('classesBtn').classList.remove('active');
+            })
+            .catch(error => {
+                console.error('Error fetching students:', error);
+                alert('Error fetching students for class: ' + className);
+            });
+    }
+
+    function showStudentsModal(students, className) {
+
+        const modal = document.getElementById('studentsModal');
+        const title = document.getElementById('studentsModalTitle');
+        const tbody = document.getElementById('studentsTableBody');
+        const totalCount = document.getElementById('totalStudentsCount');
+
+        console.log('Modal element: ', modal);
+
+        // Set title and count
+        title.textContent = `Students in ${className}`;
+        totalCount.textContent = students.length;
+
+        // Populate table
+        tbody.innerHTML = students.map(student => `
+        <tr>
+            <td>
+                <div class="student-info-cell">
+                    <div class="student-avatar-small">
+                        ${(student.prenom || student.nom || 'N').charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                        <div class="student-name">${student.prenom || ''} ${student.nom || ''}</div>
+                        <div class="student-matricule">${student.matricule || ''}</div>
+                    </div>
+                </div>
+            </td>
+            <td>${student.matricule || ''}</td>
+            <td>${student.email || 'N/A'}</td>
+            <td>${student.classe || className}</td>
+            <td>${student.departement || 'N/A'}</td>
+            <td>
+                <div class="action-buttons">
+                    <button class="btn-icon btn-view" onclick="selectStudent('${student.matricule}')" title="View Details">
+                        <span>👁️</span>
+                    </button>
+                    <button class="btn-icon btn-pdf" onclick="generateStudentPDF('${student.matricule}')" title="Generate PDF">
+                        <span>📄</span>
+                    </button>
+                    <button class="btn-icon btn-delete" onclick="deleteStudent('${student.matricule}')" title="Delete Student">
+                        <span>🗑️</span>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    `).join('');
+
+        modal.style.display = 'block';
+    }
+
+    function closeStudentsModal() {
+        document.getElementById('studentsModal').style.display = 'none';
+    }
+
+    // New function to delete student
+    function deleteStudent(matricule) {
+        if (confirm('Are you sure you want to delete this student? This action cannot be undone.')) {
+            fetch(`/api/student/${matricule}`, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to delete student');
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    alert('Student deleted successfully');
+                    // Refresh the current modal view
+                    const currentClass = document.getElementById('studentsModalTitle').textContent.replace('Students in ', '');
+                    selectClass(currentClass);
+                })
+                .catch(error => {
+                    console.error('Error deleting student:', error);
+                    alert('Error deleting student: ' + error.message);
+                });
+        }
+    }
+
+    // New function to generate PDF for individual student
+    function generateStudentPDF(matricule) {
+        fetch(`/api/student/${matricule}/pdf`, {
+            method: 'GET'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to generate PDF');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `student_${matricule}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            })
+            .catch(error => {
+                console.error('Error generating PDF:', error);
+                alert('Error generating PDF: ' + error.message);
+            });
+    }
+
+    // New function to export all students to PDF
+    function exportAllStudentsPDF() {
+        const currentClass = document.getElementById('studentsModalTitle').textContent.replace('Students in ', '');
+
+        fetch(`/api/student/class/${currentClass}/pdf`, {
+            method: 'GET'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to generate PDF');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `students_${currentClass}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            })
+            .catch(error => {
+                console.error('Error generating PDF:', error);
+                alert('Error generating PDF: ' + error.message);
+            });
+    }
+
+    // Update the window.onclick to handle the new modal
+    window.onclick = function(event) {
+        const studentModal = document.getElementById('studentModal');
+        const studentsModal = document.getElementById('studentsModal');
+
+        if (event.target === studentModal) {
+            closeModal();
+        }
+        if (event.target === studentsModal) {
+            closeStudentsModal();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        loadClasses();
+    });
+
+    // Function to load classes from backend
+    function loadClasses() {
+        fetch('/api/etudiant/classes')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch classes');
+                }
+                return response.json();
+            })
+            .then(classes => {
+                populateClassesDropdown(classes);
+            })
+            .catch(error => {
+                console.error('Error loading classes:', error);
+                // Show error message in dropdown
+                document.getElementById('classesList').innerHTML = `
+                <div class="no-classes">
+                    <div class="no-classes-icon">⚠️</div>
+                    <div>Failed to load classes</div>
+                </div>
+            `;
+            });
+    }
+
+    // Function to populate classes dropdown
+    function populateClassesDropdown(classes) {
+        const classesList = document.getElementById('classesList');
+
+        if (!classes || classes.length === 0) {
+            classesList.innerHTML = `
+            <div class="no-classes">
+                <div class="no-classes-icon">📚</div>
+                <div>No classes available</div>
+            </div>
+        `;
+            return;
+        }
+
+        classesList.innerHTML = classes.map(cls => `
+        <div class="class-item" onclick="selectClass('${cls}')">
+            <div class="class-info">
+                <div class="class-name">${cls}</div>
+                <div class="class-details">Click to view students</div>
+            </div>
+            <div class="class-count">?</div>
+        </div>
+    `).join('');
+    }
+
+    // Function to toggle classes dropdown
+    function toggleClassesDropdown() {
+        const menu = document.getElementById('classesMenu');
+        const btn = document.getElementById('classesBtn');
+
+        menu.classList.toggle('show');
+        btn.classList.toggle('active');
+
+        // Close specialty dropdown if open
+        document.getElementById('specialtyDropdown').style.display = 'none';
+    }
+
+
+    // Function to filter classes
+    function filterClasses() {
+        const input = document.getElementById('classSearchInput').value.toLowerCase();
+        const items = document.querySelectorAll('.class-item');
+
+        items.forEach(item => {
+            const className = item.querySelector('.class-name').textContent.toLowerCase();
+            item.style.display = className.includes(input) ? 'flex' : 'none';
+        });
+    }
+
+    const specialties = {
+        "ISI": ["ISI5IL", "ISI5MSI", "ISI4En", "ISI4Fr", "ISI3En", "ISI3Fr"],
+        "SRT": ["SRT5SSC", "SRT4", "SRT3"],
+        "GC": ["GC3"],
+        "TCFrancophone": ["FrA1", "FrB1", "Fr2"],
+        "TCAnglophone": ["En1", "En2"]
+    };
+
+    function toggleSpecialtyDropdown() {
+        const dropdown = document.getElementById('specialtyDropdown');
+
+        // Close classes dropdown if open
+        document.getElementById('classesMenu').classList.remove('show');
+        document.getElementById('classesBtn').classList.remove('active');
+
+        if (dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+            return;
+        }
+
+        dropdown.innerHTML = Object.keys(specialties).map(name => `
+        <div onclick="openSpecialtyModal('${name}')">${name}</div>
+    `).join('');
+        dropdown.style.display = 'block';
+    }
+
+    function openSpecialtyModal(specialtyName) {
+        document.getElementById('modalTitle').innerText = `Classes in ${specialtyName}`;
+        const classList = specialties[specialtyName];
+
+        const listHtml = classList.map(cls => `
+        <div onclick="selectClass('${cls}')"
+             style="padding: 10px; border: 1px solid #ccc; margin-top: 10px; cursor: pointer;">
+            ${cls}
+        </div>
+    `).join('');
+
+        document.getElementById('classListInModal').innerHTML = listHtml;
+        document.getElementById('specialtyModal').style.display = 'block';
+    }
+
+    function closeSpecialtyModal() {
+        document.getElementById('specialtyModal').style.display = 'none';
+    }
+
+
 </script>
+</html>

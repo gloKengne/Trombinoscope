@@ -14,15 +14,21 @@ public interface EtudiantRepository extends JpaRepository<Etudiant,String> {
     Optional<Etudiant> findById(String matricule);
     Optional<Etudiant> findByNom(String nom);
     Optional<Etudiant> findByPrenom(String prenom);
+    List<Etudiant> findByNomContainingIgnoreCaseOrPrenomContainingIgnoreCaseOrMatriculeContainingIgnoreCase(String nom, String prenom, String matricule);
 
-
-    List<Etudiant> nom(String nom);
 
     @Query("SELECT e FROM Etudiant e WHERE " +
-            "(:name IS NULL OR LOWER(e.nom) LIKE LOWER(CONCAT('%', :nom, '%'))) AND " +
+            "(:nom IS NULL OR LOWER(e.nom) LIKE LOWER(CONCAT('%', :nom, '%'))) OR " +
+            "(:prenom IS NULL OR LOWER(e.prenom) LIKE LOWER(CONCAT('%', :prenom, '%'))) AND " +
             "(:matricule IS NULL OR e.matricule = :matricule)")
     List<Etudiant> searchEtudiants(@Param("nom") String nom,
+                                 @Param("prenom") String prenom,
                                  @Param("matricule") String matricule);
 
     boolean existsByMatricule(String matricule);
+
+    List<Etudiant> findByClasse(Etudiant.classe classe);
+
+    @Query("SELECT DISTINCT e.classe FROM Etudiant e WHERE e.classe IS NOT NULL ORDER BY e.classe")
+    List<Etudiant.classe> findDistinctClasses();
 }

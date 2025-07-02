@@ -74,7 +74,7 @@ public class ExcelImporter {
                         String dateStr = getCellValue(row.getCell(3));
                         String classeStr = getCellValue(row.getCell(4));
                         String lieuDeNaissance = getCellValue(row.getCell(5));
-                        String sexeStr = getCellValue(row.getCell(6)).toUpperCase();
+                        String sexeStr = getCellValue(row.getCell(6));
 
                         // Validate required fields
                         if (matricule.isEmpty() || nom.isEmpty() || prenom.isEmpty()) {
