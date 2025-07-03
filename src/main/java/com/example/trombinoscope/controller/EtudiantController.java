@@ -4,9 +4,7 @@ import com.example.trombinoscope.entities.Etudiant;
 import com.example.trombinoscope.repositories.EtudiantRepository;
 import com.example.trombinoscope.services.EtudiantService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;

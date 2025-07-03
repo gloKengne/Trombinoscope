@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Optional, or configure for forms
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/**").permitAll() //pour ouvrir toutes les route de l'application et ne pas considere srping security
-                        //.requestMatchers("/auth/register", "/auth/home", "/auth/login", "/css/**", "/js/**", "/images/**").permitAll() // Allow access to login/register
+                        //.requestMatchers("/auth/register", "/auth/login", "/css/**", "/js/**", "/images/**").permitAll() // Allow access to login/register
                         .anyRequest().authenticated() // Secure all other endpoints
                 )
                 .formLogin(form -> form

@@ -447,11 +447,11 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: white;
+            /*background: white;*/
             padding: 40px;
             border-radius: 25px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
-            max-width: 500px;
+            /*box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);*/
+            /*max-width: 500px;*/
             width: 90%;
             text-align: center;
             animation: slideIn 0.4s ease;
@@ -488,27 +488,6 @@
             font-size: 1.8em;
             margin-bottom: 20px;
             font-weight: 700;
-        }
-
-        .info-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .info-item:last-child {
-            border-bottom: none;
-        }
-
-        .info-label {
-            font-weight: 600;
-            color: #667eea;
-        }
-
-        .info-value {
-            color: #333;
         }
 
         .classes-dropdown {
@@ -1041,6 +1020,145 @@
             box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
         }
 
+        .carteetu{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .carte {
+            position: relative;
+            width: 350px;
+            height: 550px;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            font-family: sans-serif;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            align-content: center;
+            background-image: url(../../images/background.png);
+            background-size: cover;
+        }
+
+
+        .ministere {
+            position: absolute;
+            top: 4px;
+            width: 100%;
+            text-align: center;
+            color: #007759;
+            font-size: 15px;
+            z-index: 1;
+        }
+
+
+        .logoetu {
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 230px;
+            z-index: 1;
+        }
+
+        .drapeau {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 350px;
+            z-index: 1;
+        }
+
+        .band {
+            position: absolute;
+            top: 104px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 350px;
+            z-index: 1;
+        }
+
+        .specialite {
+            position: absolute;
+            top: 120px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 28px;
+            z-index: 1;
+        }
+
+        .annee {
+            position: absolute;
+            top: 155px;
+            width: 100%;
+            text-align: center;
+            font-size: 13px;
+            z-index: 1;
+        }
+
+        .cadre-photo {
+            position: absolute;
+            top: 180px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 120px;
+            z-index: 1;
+        }
+
+        .infos {
+            position: absolute;
+            bottom: 100px;
+            left: 15px;
+            font-size: 12px;
+            z-index: 1;
+        }
+
+        .qr {
+            position: absolute;
+            bottom: 30px;
+            left: 15px;
+            width: 70px;
+            z-index: 1;
+        }
+
+        .signature {
+            position: absolute;
+            bottom: 90px;
+            right: 15px;
+            font-size: 12px;
+            z-index: 1;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: #74226B;
+            color: white;
+            text-align: center;
+            padding: 5px 0;
+            z-index: 1;
+        }
+
+        .cart-modal {
+            display: none; /* This is crucial - modal should be hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .name{
+            font-size: large;
+
+        }
+
     </style>
 </head>
 <body>
@@ -1234,7 +1352,53 @@
     </div>
 </div>
 
+<div id="studentCardModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <button class="close" onclick="closeStudentModal()">&times;</button>
 
+        <div class="carteetu">
+            <div class="carte">
+
+        <div class="carte">
+
+
+            <div class="ministere">MINISTERE DE L'ENSEIGNEMENT SUPERIEUR</div>
+
+
+            <img src="../../images/Logo Institut USJ INGENIEUR%20(1).png" class="logoetu" alt="Logo institut" />
+
+            <img src="../../images/drapeau+band.png" class="drapeau" alt="Logo institut" />
+
+            <div class="specialite">
+                GENIE ELECTRIQUE
+            </div>
+            <div class="annee">Année Académique 2025-2026</div>
+
+            <img src="../../images/cadre.png" class="cadre-photo">
+
+
+
+            <div  class="name"><p><span id="cardNom"></span></p></div>
+
+            <div class="infos">
+                <p>Matricule : <span id="cardMatricule"></span></p>
+                <p>Né(e) le : <span id="cardDateNaissance">--/--/----</span><span>à</span></p>
+                <p>Spécialité : <span id="cardClasse"></span></p>
+                <p>Sexe : <span id="cardSexe">----</span></p>
+            </div>
+
+            <!-- QR code -->
+            <img src="../../images/Code QR.jpg" class="qr" alt="QR Code" />
+
+            <div class="signature">LE DIRECTEUR</div>
+
+            <!-- Pied de page -->
+            <div class="footer">CARTE D'ETUDIANT</div>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 
 <script>
@@ -1427,6 +1591,87 @@
             });
     }
 
+
+    function selectStudents(matricule) {
+        console.log('selectStudent called with:', matricule);
+
+        console.log('Available students:', currentStudents);
+
+        const student = currentStudents.find(s => s.matricule === matricule);
+
+        if (!student) {
+            console.error('Student not found:', matricule);
+            console.log('Available matricules:', currentStudents.map(s => s.matricule));
+            return;
+        }
+
+        console.log('Found student:', student);
+        showStudentCardModal(student);
+    }
+
+    function showStudentCardModal(student) {
+        const modal = document.getElementById('studentCardModal');
+
+        // Check if modal exists
+        if (!modal) {
+            console.error('Modal element with ID "studentCardModal" not found!');
+            return;
+        }
+
+        // Populate card with student data
+        const cardMatricule = document.getElementById('cardMatricule');
+        if (cardMatricule) {
+            cardMatricule.textContent = student.matricule || '';
+        }
+
+        const cardNom = document.getElementById('cardNom');
+        if (cardNom) {
+            cardNom.textContent = `${student.prenom || ''} ${student.nom || ''}`.trim();
+        }
+
+        const cardDateNaissance = document.getElementById('cardDateNaissance');
+        if (cardDateNaissance) {
+            cardDateNaissance.textContent = student.dateNaissance || '--/--/----';
+        }
+
+        const cardLieuNaissance = document.getElementById('cardLieuNaissance');
+        if (cardLieuNaissance) {
+            cardLieuNaissance.textContent = student.lieuNaissance || '----';
+        }
+
+        const cardClasse = document.getElementById('cardClasse');
+        if (cardClasse) {
+            cardClasse.textContent = student.classe || 'N/A';
+        }
+
+        const cardSexe = document.getElementById('cardSexe');
+        if (cardSexe) {
+            cardSexe.textContent = student.sexe || '----';
+        }
+
+        // Handle photo - add safety checks
+        const photoElement = document.getElementById('cardPhoto');
+        const photoPlaceholder = document.getElementById('cardPhotoPlaceholder');
+
+        if (photoElement && photoPlaceholder) {
+            if (student.photo) {
+                photoElement.src = student.photo;
+                photoElement.style.display = 'block';
+                photoPlaceholder.style.display = 'none';
+            } else {
+                photoElement.style.display = 'none';
+                photoPlaceholder.style.display = 'flex';
+                photoPlaceholder.textContent = `${(student.prenom || '').charAt(0)}${(student.nom || '').charAt(0)}`.toUpperCase() || '👤';
+            }
+        }
+
+        // Show modal
+        modal.style.display = 'block';
+    }
+    function closeStudentModal() {
+        document.getElementById('studentCardModal').style.display = 'none';
+    }
+
     function performSearch() {
         const searchTerm = searchInput.value.trim();
 
@@ -1483,38 +1728,38 @@
             });
     }
 
-    function showStudentModal(student) {
-        // Populate modal with student data
-        if (studentName){
-            document.getElementById('studentName').textContent = `${student.prenom || ''} ${student.nom || ''}`.trim();
-        }
-        if(studentId){
-            document.getElementById('studentId').textContent = student.matricule || student.id || '';
-        }
-        if(studentMajor){
-            document.getElementById('studentMajor').textContent = student.classe || 'N/A';
-        }
-        if(studentYear){
-            document.getElementById('studentYear').textContent = student.annee || student.year || 'N/A';
-        }
-        if(studentDepartment){
-            document.getElementById('studentDepartment').textContent = student.departement || student.department || 'N/A';
-        }
-
-        // Set default photo or student photo
-        const photoElement = document.getElementById('studentPhoto');
-        if (student.photo) {
-            photoElement.src = student.photo;
-            photoElement.style.display = 'block';
-        } else {
-            // Create a default avatar with initials
-            photoElement.style.display = 'none';
-        }
-
-        // Show modal
-        document.getElementById('studentModal').style.display = 'block';
-    }
-
+    // function showStudentModal(student) {
+    //     // Populate modal with student data
+    //     if (studentName){
+    //         document.getElementById('studentName').textContent = `${student.prenom || ''} ${student.nom || ''}`.trim();
+    //     }
+    //     if(studentId){
+    //         document.getElementById('studentId').textContent = student.matricule || student.id || '';
+    //     }
+    //     if(studentMajor){
+    //         document.getElementById('studentMajor').textContent = student.classe || 'N/A';
+    //     }
+    //     if(studentYear){
+    //         document.getElementById('studentYear').textContent = student.annee || student.year || 'N/A';
+    //     }
+    //     if(studentDepartment){
+    //         document.getElementById('studentDepartment').textContent = student.departement || student.department || 'N/A';
+    //     }
+    //
+    //     // Set default photo or student photo
+    //     const photoElement = document.getElementById('studentPhoto');
+    //     if (student.photo) {
+    //         photoElement.src = student.photo;
+    //         photoElement.style.display = 'block';
+    //     } else {
+    //         // Create a default avatar with initials
+    //         photoElement.style.display = 'none';
+    //     }
+    //
+    //     // Show modal
+    //     document.getElementById('studentModal').style.display = 'block';
+    // }
+    //
     function closeModal() {
         document.getElementById('studentModal').style.display = 'none';
     }
@@ -1555,7 +1800,11 @@
             });
     }
 
+    let currentStudents = [];
+
     function showStudentsModal(students, className) {
+
+        currentStudents = students;
 
         const modal = document.getElementById('studentsModal');
         const title = document.getElementById('studentsModalTitle');
@@ -1588,7 +1837,7 @@
             <td>${student.departement || 'N/A'}</td>
             <td>
                 <div class="action-buttons">
-                    <button class="btn-icon btn-view" onclick="selectStudent('${student.matricule}')" title="View Details">
+                    <button class="btn-icon btn-view" onclick="selectStudents('${student.matricule}')" title="View Details">
                         <span>👁️</span>
                     </button>
                     <button class="btn-icon btn-pdf" onclick="generateStudentPDF('${student.matricule}')" title="Generate PDF">
