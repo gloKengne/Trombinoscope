@@ -24,13 +24,13 @@ public class CustomUserDetailsService implements UserDetailsService {
      * It looks up the user by 'name' (which is your "username") and returns a UserDetails object.
      */
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // You are using 'name' as the login field instead of 'email' or 'username'
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with name: " + username));
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),                        // This is the username for login
+                user.getEmail(),                        // This is the email for login
                 user.getPassword(),                    // Spring will compare this with the submitted password
                 Collections.singletonList(             // Authorities must be a non-empty collection
                         new SimpleGrantedAuthority("ROLE_" + user.getRole().name())  // e.g., ROLE_USER

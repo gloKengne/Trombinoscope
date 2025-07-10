@@ -87,32 +87,32 @@ public class AuthController {
         String currentUser = auth.getName();
 
         model.addAttribute("currentUser", currentUser);
-        return "auth/home"; // returns home.html
+        return "auth/home";
     }
 
-    @PostMapping("/login")
-    public String login(
-            @RequestParam String username,
-            @RequestParam String password,
-            HttpSession session,
-            RedirectAttributes redirectAttributes
-    ) {
-        try {
-            log.info("Received request to login with username: {} and password: {}", username, password);
-
-            User user = userService.validateUser(username, password); // Implement this in UserService
-
-            if (user != null) {
-                session.setAttribute("currentUser", "gloria"); // Store user in session
-                return "redirect:/auth/home"; // Redirect to home
-            } else {
-                redirectAttributes.addAttribute("error", "Invalid credentials");
-                return "redirect:/auth/login";
-            }
-        } catch (Exception e) {
-            redirectAttributes.addAttribute("error", "Login failed");
-            return "redirect:/auth/login";
-        }
-    }
+//    @PostMapping("/login")
+//    public String login(
+//            @RequestParam String username,
+//            @RequestParam String password,
+//            HttpSession session,
+//            RedirectAttributes redirectAttributes
+//    ) {
+//        try {
+//            log.info("Received request to login with username: {} and password: {}", username, password);
+//
+//            User user = userService.validateUser(username, password); // Implement this in UserService
+//
+//            if (user != null) {
+//                session.setAttribute("currentUser", "gloria"); // Store user in session
+//                return "redirect:/auth/home"; // Redirect to home
+//            } else {
+//                redirectAttributes.addAttribute("error", "Invalid credentials");
+//                return "redirect:/auth/login";
+//            }
+//        } catch (Exception e) {
+//            redirectAttributes.addAttribute("error", "Login failed");
+//            return "redirect:/auth/login";
+//        }
+//    }
 }
 

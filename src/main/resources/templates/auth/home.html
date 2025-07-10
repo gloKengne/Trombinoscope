@@ -1163,7 +1163,6 @@
 </head>
 <body>
 <div class="background-pattern"></div>
-
 <nav class="navbar">
     <div class="logo">📚 Trombinoscope</div>
     <div class="classes-dropdown">
@@ -1207,7 +1206,7 @@
     <div class="user-info">
         <div class="user-avatar" th:text="${currentUser.substring(0,1).toUpperCase()}">J</div>
         <span th:text="${currentUser}">Username</span>
-        <form method="post" action="/logout" style="display: inline;">
+        <form method="post" th:action="@{/auth/login}" style="display: inline;">
             <button type="submit" class="logout-btn">Logout</button>
         </form>
     </div>
@@ -1319,7 +1318,7 @@
 
         <div class="table-actions">
             <div class="bulk-actions">
-                <button class="export-all-btn" onclick="exportAllStudentsPDF()">
+                <button class="export-all-btn" onclick="exportAllCardsPDF()">
                     <span>📄</span> Export All to PDF
                 </button>
             </div>
@@ -1399,7 +1398,14 @@
         </div>
     </div>
 </div>
+
+<div id="pdfCardsContainer"
+     style="display: block"></div>
+
+
 </body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script>
 
@@ -1728,38 +1734,6 @@
             });
     }
 
-    // function showStudentModal(student) {
-    //     // Populate modal with student data
-    //     if (studentName){
-    //         document.getElementById('studentName').textContent = `${student.prenom || ''} ${student.nom || ''}`.trim();
-    //     }
-    //     if(studentId){
-    //         document.getElementById('studentId').textContent = student.matricule || student.id || '';
-    //     }
-    //     if(studentMajor){
-    //         document.getElementById('studentMajor').textContent = student.classe || 'N/A';
-    //     }
-    //     if(studentYear){
-    //         document.getElementById('studentYear').textContent = student.annee || student.year || 'N/A';
-    //     }
-    //     if(studentDepartment){
-    //         document.getElementById('studentDepartment').textContent = student.departement || student.department || 'N/A';
-    //     }
-    //
-    //     // Set default photo or student photo
-    //     const photoElement = document.getElementById('studentPhoto');
-    //     if (student.photo) {
-    //         photoElement.src = student.photo;
-    //         photoElement.style.display = 'block';
-    //     } else {
-    //         // Create a default avatar with initials
-    //         photoElement.style.display = 'none';
-    //     }
-    //
-    //     // Show modal
-    //     document.getElementById('studentModal').style.display = 'block';
-    // }
-    //
     function closeModal() {
         document.getElementById('studentModal').style.display = 'none';
     }
@@ -2073,6 +2047,46 @@
     function closeSpecialtyModal() {
         document.getElementById('specialtyModal').style.display = 'none';
     }
+
+    function exportAllCardsPDF() {
+        const container = document.getElementById("pdfCardsContainer");
+        container.innerHTML = ''; // Clear previous cards
+
+        currentStudents.forEach(student => {
+            const cardHTML = `
+        <div class="carte" style="width: 350px; height: 550px; position: relative; margin: 10px auto; page-break-inside: avoid;">
+            <div class="ministere">MINISTERE DE L'ENSEIGNEMENT SUPERIEUR</div>
+            <img src="../../images/Logo Institut USJ INGENIEUR%20(1).png" class="logoetu" alt="Logo institut" />
+            <img src="../../images/drapeau+band.png" class="drapeau" alt="Drapeau" />
+            <div class="specialite">${student.classe || 'Classe inconnue'}</div>
+            <div class="annee">Année Académique 2025-2026</div>
+            <img src="../../images/cadre.png" class="cadre-photo">
+            <div class="name"><p>${student.prenom || ''} ${student.nom || ''}</p></div>
+            <div class="infos">
+                <p>Matricule : ${student.matricule}</p>
+                <p>Né(e) le : ${student.dateNaissance || '--/--/----'}</p>
+                <p>Spécialité : ${student.classe}</p>
+                <p>Sexe : ${student.sexe || '----'}</p>
+            </div>
+            <img src="../../images/Code QR.jpg" class="qr" alt="QR Code" />
+            <div class="signature">LE DIRECTEUR</div>
+            <div class="footer">CARTE D'ETUDIANT</div>
+        </div>
+        `;
+            container.innerHTML += cardHTML;
+        });
+
+        document.getElementById('pdfCardsContainer').style.visibility = 'visible';
+
+        html2pdf().from(container).set({
+            margin: 0,
+            filename: `cartes_${new Date().toISOString()}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        }).save();
+    }
+
 
 
 </script>

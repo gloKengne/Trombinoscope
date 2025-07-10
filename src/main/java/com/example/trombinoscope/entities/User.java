@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @Entity
 @AllArgsConstructor
@@ -63,9 +64,17 @@ public class User {
         return id;
     }
 
+    public boolean isEnabled() {
+        return true;
+    }
+
     public enum Role{
         USER,
-        ADMIN
+        ADMIN;
+
+        public String getAuthority() {
+            return name();
+        }
     }
 
 

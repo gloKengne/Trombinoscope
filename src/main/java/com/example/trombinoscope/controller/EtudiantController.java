@@ -3,11 +3,16 @@ package com.example.trombinoscope.controller;
 import com.example.trombinoscope.entities.Etudiant;
 import com.example.trombinoscope.repositories.EtudiantRepository;
 import com.example.trombinoscope.services.EtudiantService;
+import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
-import java.util.ArrayList;
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,6 +25,8 @@ public class EtudiantController {
     private EtudiantService etudiantService;
     @Autowired
     private EtudiantRepository etudiantRepository;
+    @Autowired
+    private TemplateEngine templateEngine;
 
     @GetMapping("/{matricule}")
     public ResponseEntity<String> getEtudiant(@PathVariable String matricule) {
@@ -97,4 +104,40 @@ public class EtudiantController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @GetMapping("/student/class/{classe}/pdf")
+    public ResponseEntity<byte[]> generatePdfForClass(@PathVariable Etudiant.classe classe) throws Exception {
+        try {
+            classe = classe.valueOf(classe.name());
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid class name");
+        }
+
+        List<Etudiant> students = etudiantRepository.findByClasse(classe);
+
+        if (students.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No students found");
+        }
+
+        Context context = new Context();
+        context.setVariable("students", students);
+
+        String html = templateEngine.process("carte", context);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PdfRendererBuilder builder = new PdfRendererBuilder();
+        builder.useFastMode();
+        builder.withHtmlContent(html, null);
+        builder.toStream(outputStream);
+        builder.run();
+
+        byte[] pdfBytes = outputStream.toByteArray();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.inline().filename("class_" + classe + "_cards.pdf").build());
+
+        return ResponseEntity.ok().headers(headers).body(pdfBytes);
+    }
+
 }

@@ -5,42 +5,178 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carte d'Étudiant</title>
     <link rel="stylesheet" href="../template%20cartes/template%20cartes/style.css">
+
+    <style>
+        .carteetu{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .carte {
+            position: relative;
+            width: 350px;
+            height: 550px;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            font-family: sans-serif;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            align-content: center;
+            background-image: url(/images/background.png);
+            background-size: cover;
+        }
+
+
+        .ministere {
+            position: absolute;
+            top: 4px;
+            width: 100%;
+            text-align: center;
+            color: #007759;
+            font-size: 15px;
+            z-index: 1;
+        }
+
+
+        .logoetu {
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 230px;
+            z-index: 1;
+        }
+
+        .drapeau {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 350px;
+            z-index: 1;
+        }
+
+        .band {
+            position: absolute;
+            top: 104px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 350px;
+            z-index: 1;
+        }
+
+        .specialite {
+            position: absolute;
+            top: 120px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 28px;
+            z-index: 1;
+        }
+
+        .annee {
+            position: absolute;
+            top: 155px;
+            width: 100%;
+            text-align: center;
+            font-size: 13px;
+            z-index: 1;
+        }
+
+        .cadre-photo {
+            position: absolute;
+            top: 180px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 120px;
+            z-index: 1;
+        }
+
+        .infos {
+            position: absolute;
+            bottom: 100px;
+            left: 15px;
+            font-size: 12px;
+            z-index: 1;
+        }
+
+        .qr {
+            position: absolute;
+            bottom: 30px;
+            left: 15px;
+            width: 70px;
+            z-index: 1;
+        }
+
+        .signature {
+            position: absolute;
+            bottom: 90px;
+            right: 15px;
+            font-size: 12px;
+            z-index: 1;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: #74226B;
+            color: white;
+            text-align: center;
+            padding: 5px 0;
+            z-index: 1;
+        }
+
+        .cart-modal {
+            display: none; /* This is crucial - modal should be hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .name{
+            font-size: large;
+
+        }
+    </style>
 </head>
+
 <body class="carteetu">
-    <div class="carte">
 
-        
-        <div class="ministere">MINISTERE DE L'ENSEIGNEMENT SUPERIEUR</div>
+<!-- Repeat card for each student -->
+<div th:each="student : ${students}" class="carte">
 
-        
-        <img src="../../static/images/Logo%20Institut%20USJ%20INGENIEUR%20(1).png" class="logoetu" alt="Logo institut" />
-        
-        <img src="../../static/images/drapeau+band.png" class="drapeau" alt="Logo institut" />
+    <div class="ministere">MINISTERE DE L'ENSEIGNEMENT SUPERIEUR</div>
 
-        <div class="specialite">
-            GENIE ELECTRIQUE
-        </div>
-        <div class="annee">Année Académique 2025-2026</div>
+    <img th:src="@{/images/Logo.png}" class="logoetu" alt="Logo institut" />
+    <img th:src="@{/images/drapeau+band.png}" class="drapeau" alt="Bandeau" />
+    <div class="specialite" th:text="${student.classe}">CLASS</div>
+    <div class="annee">Année Académique 2025-2026</div>
 
-        
-        
-        <img src="../../static/images/cadre.png" class="cadre-photo">
+    <img th:src="@{/images/cadre.png}" class="cadre-photo"/>
 
-        <div class="infos">
-            <p>Matricule : <span id="cardMatricule"></span></p>
-            <p>Né(e) le : <span>à</span></p>
-            <p>Spécialité : </p>
-            <p>Sexe : </p>
-        </div>
+    <div class="name">
+        <p th:text="${student.nom + ' ' + student.prenom}">NOM COMPLET</p>
+    </div>
 
-        <!-- QR code -->
-        <img src="../../static/images/Code%20QR.jpg" class="qr" alt="QR Code" />
+    <div class="infos">
+        <p>Matricule : <span th:text="${student.matricule}">MAT001</span></p>
+        <p>Né(e) le : <span th:text="${student.dateNaissance}">--/--/----</span></p>
+        <p>Spécialité : <span th:text="${student.classe}">ISI</span></p>
+        <p>Sexe : <span th:text="${student.sexe}">Masculin</span></p>
+    </div>
 
-        <div class="signature">LE DIRECTEUR</div>
+    <img th:src="@{/images/CodeQR.jpg}" class="qr" alt="QR Code"/>
+    <div class="signature">LE DIRECTEUR</div>
+    <div class="footer">CARTE D'ETUDIANT</div>
 
-        <!-- Pied de page -->
-        <div class="footer">CARTE D'ETUDIANT</div>
 </div>
-
 </body>
 </html>

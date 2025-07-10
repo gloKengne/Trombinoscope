@@ -1,47 +1,67 @@
 package com.example.trombinoscope.Config;
 
 import com.example.trombinoscope.Security.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(12);
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Optional, or configure for forms
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**").permitAll() //pour ouvrir toutes les route de l'application et ne pas considere srping security
-                        //.requestMatchers("/auth/register", "/auth/login", "/css/**", "/js/**", "/images/**").permitAll() // Allow access to login/register
-                        .anyRequest().authenticated() // Secure all other endpoints
+
+                .authorizeHttpRequests(authz -> authz
+//                        .requestMatchers("/**").permitAll()
+                        .requestMatchers("/", "/auth/register", "/auth/login", "/css/**", "/js/**", "/images/**").permitAll()
+//                        .requestMatchers("/").authenticated()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                        .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        //.loginPage("/auth/login") // Your custom Thymeleaf login page (GET /login)
-                        //.loginProcessingUrl("/auth/login") // The POST endpoint to submit credentials
-                        .usernameParameter("username")
-                        .passwordParameter("password")
+                        .loginPage("/auth/login")
+                        .loginProcessingUrl("/auth/login")
                         .defaultSuccessUrl("/auth/home", true)
+                        .failureUrl("/auth/login?error=true")
+                        .usernameParameter("email")
+                        .passwordParameter("password")
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -50,16 +70,32 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .permitAll()
+                )
+
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        .maximumSessions(1)
+                        .maxSessionsPreventsLogin(false)
+//                        .and()
+//                        .sessionFixation().migrateSession()
+                )
+                .csrf(csrf -> csrf
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 );
+//                .headers(headers -> headers
+//                        .frameOptions().deny()
+//                        .contentTypeOptions().and()
+//                        .httpStrictTransportSecurity(hstsConfig -> hstsConfig
+//                                .maxAgeInSeconds(31536000)
+//                                .includeSubdomains(true)
+//                        )
+
+//                .exceptionHandling(exceptions -> exceptions
+//                        .accessDeniedPage("/access-denied")
+//                );
 
         return http.build();
     }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new CustomUserDetailsService();
-    }
-
 
 }
 
