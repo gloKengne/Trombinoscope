@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <title>Trombinoscope - Student Directory</title>
     <style>
         * {
@@ -474,13 +476,46 @@
         }
 
         .student-photo {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
+            position: absolute;
+            top: 178px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 115px;
+            height: 109px;
+            z-index: 200;
+        }
+
+
+        /*width: 150px;*/
+        /*height: 150px;*/
+        /*transform: translateX(-50%);*/
+        /*border-radius: 50%;*/
+        /*object-fit: cover;*/
+        /*margin: 0 auto 25px;*/
+        /*border: 5px solid #667eea;*/
+        /*object-fit: cover;*/
+        /*z-index: 1;*/
+
+        .cadre-photo {
+            position: absolute;
+            top: 170px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 136px;
+            height: 125px;
+            z-index: 2;
+        }
+
+        .student-photo2 {
+            position: absolute;
+            top: 403px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 202px;
+            height: 220px;
             object-fit: cover;
-            margin: 0 auto 25px;
-            border: 5px solid #667eea;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            z-index: 2;
         }
 
         .student-info h3 {
@@ -501,7 +536,7 @@
             gap: 8px;
             padding: 10px 20px;
             background: rgba(255, 255, 255, 0.15);
-            color: white;
+            color: #007bff;
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 25px;
             cursor: pointer;
@@ -526,6 +561,7 @@
         .dropdown-arrow {
             font-size: 12px;
             transition: transform 0.3s ease;
+            color: #007bff;
         }
 
         .classes-btn.active .dropdown-arrow {
@@ -1036,8 +1072,10 @@
             font-family: sans-serif;
             box-shadow: 0 0 10px rgba(0,0,0,0.3);
             align-content: center;
-            background-image: url(../../images/background.png);
+            background-image: url(/images/background.png);
             background-size: cover;
+            /*page-break-after: always;*/
+
         }
 
 
@@ -1051,6 +1089,16 @@
             z-index: 1;
         }
 
+        .ministere2 {
+            position: absolute;
+            top: 4px;
+            width: 100%;
+            text-align: center;
+            color: #007759;
+            font-size: 33px;
+            z-index: 1;
+        }
+
 
         .logoetu {
             position: absolute;
@@ -1061,6 +1109,88 @@
             z-index: 1;
         }
 
+        .logoetu2 {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 450px;
+            z-index: 1;
+        }
+
+        .name-class{
+            position: absolute;
+            top: 336px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px; /* Largeur pour contenir le nom le plus long. Ajustez. */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5vw;
+            z-index: 1;
+            line-height: 12px;
+        }
+
+        .name-class2{
+            position: absolute;
+            top: 650px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            z-index: 1;
+            font-size: 50px;
+        }
+
+        .name{
+            color: #000000;
+            font-size:18px;
+            line-height: 1;
+            text-align: center;
+            width: 100%;
+            font-weight: normal;
+            margin-top: -35px;
+        }
+
+        .name2{
+            position: static;
+            color: #000000;
+            font-size:35px;
+            line-height: 1;
+            text-align: center;
+            width: 100%;
+            font-weight: normal;
+            top: 650px;
+
+        }
+
+        .class{
+            color: #000000;
+            font-size:18px;
+            line-height: 1;
+            text-align: center;
+            width: 100%;
+        }
+
+        .class2{
+            position: static;
+            color: #000000;
+            font-size:35px;
+            line-height: 1;
+            text-align: center;
+            width: 100%;
+        }
+
+
+
         .drapeau {
             position: absolute;
             top: 8px;
@@ -1070,12 +1200,12 @@
             z-index: 1;
         }
 
-        .band {
+        .drapeau2 {
             position: absolute;
-            top: 104px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 350px;
+            top: 8px;
+            /*left: 50%;*/
+            /*transform: translateX(-50%);*/
+            width: 100%;
             z-index: 1;
         }
 
@@ -1089,6 +1219,16 @@
             z-index: 1;
         }
 
+        .specialite2 {
+            position: absolute;
+            top: 270px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 55px;
+            z-index: 1;
+        }
+
         .annee {
             position: absolute;
             top: 155px;
@@ -1098,22 +1238,85 @@
             z-index: 1;
         }
 
-        .cadre-photo {
+
+
+        .annee2 {
             position: absolute;
-            top: 180px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 110px;
-            height: 120px;
+            top: 350px;
+            width: 100%;
+            text-align: center;
+            font-size: 25px;
             z-index: 1;
         }
 
+        .cadre-photo2 {
+            position: absolute;
+            top: 390px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 250px;
+            height: 250px;
+            z-index: 1;
+        }
+
+
         .infos {
             position: absolute;
-            bottom: 100px;
             left: 15px;
-            font-size: 12px;
+            bottom:106px;
+            font-size: 14px;
             z-index: 1;
+            display: grid;
+            grid-template-columns: max-content min-content 1fr;
+            column-gap: 5px;
+            align-items: baseline;
+            line-height: 21px;
+        }
+
+        .infos2 {
+            position: absolute;
+            left: 30px;
+            bottom:230px;
+            font-size: 30px;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: baseline;
+            line-height: 21px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .info-label {
+            font-weight: normal;
+        }
+
+        .info-separator {
+            text-align: left;
+        }
+
+        .logo-fond{
+            position: absolute;
+            left: 30%;
+            bottom: 120px;
+            width: 180px;
+            height: 150px;
+            opacity: 0.15;
+        }
+
+        .logo-fond2{
+            position: absolute;
+            left: 52%;
+            top: 62%;
+            width: 500px;
+            height: auto;
+            opacity: 0.15;
+            transform: translate(-50%, -50%);
         }
 
         .qr {
@@ -1124,11 +1327,27 @@
             z-index: 1;
         }
 
+        .qr2 {
+            position: absolute;
+            bottom: 63px;
+            left: 30px;
+            width: 150px;
+            z-index: 1;
+        }
+
         .signature {
             position: absolute;
             bottom: 90px;
             right: 15px;
             font-size: 12px;
+            z-index: 1;
+        }
+
+        .signature2 {
+            position: absolute;
+            bottom: 180px;
+            right: 40px;
+            font-size: 25px;
             z-index: 1;
         }
 
@@ -1143,21 +1362,64 @@
             z-index: 1;
         }
 
-        .cart-modal {
-            display: none; /* This is crucial - modal should be hidden by default */
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
+        .footer2 {
+            position: absolute;
+            bottom: 0;
             width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: #74226B;
+            color: white;
+            text-align: center;
+            padding: 12px 0;
+            font-size: 35px;
+            z-index: 1;
         }
 
-        .name{
-            font-size: large;
-
+        /* Only applies when generating PDF */
+        .carte.pdf-mode {
+            width: 796px;
+            height: 1123.5px;
+            margin-left: -10px;
+            box-sizing: border-box;
+            page-break-after: always;
+            box-shadow: none;
+            background-size: cover;
+            /*border: 2px solid red !important;*/
+            /*page-break-inside: avoid;*/
         }
+
+        .carte.pdf-mode.page-break {
+            page-break-after: always;
+        }
+
+        #pdfCardsContainer {
+            margin: 0;
+            padding: 0;
+            width: 794px;
+        }
+
+        .info-line {
+            /*display: flex;*/
+            /*justify-content: space-between;*/
+            /*width: 100%;*/
+        }
+
+
+
+        @media print {
+            .carte {
+                /*width: 210mm;*/
+                /*height: 297mm;*/
+                /*!*page-break-after: always;*!*/
+                /*margin: 0;*/
+                /*padding: 0;*/
+            }
+        }
+
+        @page {
+            margin: 0;
+            size: A4 portrait;
+        }
+
 
     </style>
 </head>
@@ -1165,44 +1427,7 @@
 <div class="background-pattern"></div>
 <nav class="navbar">
     <div class="logo">📚 Trombinoscope</div>
-    <div class="classes-dropdown">
-        <button class="classes-btn" id="classesBtn" onclick="toggleClassesDropdown()">
-            <span>📚</span> Classes
-            <span class="dropdown-arrow">▼</span>
-        </button>
-        <div class="classes-menu" id="classesMenu">
-            <div class="menu-header">
-                <div class="menu-title">
-                    <span>🎓</span> Available Classes
-                </div>
-                <div class="menu-subtitle">Select a class to view students</div>
-            </div>
 
-            <div class="classes-search">
-                <input
-                        type="text"
-                        class="classes-search-input"
-                        placeholder="Search classes..."
-                        id="classSearchInput"
-                        oninput="filterClasses()"
-                >
-            </div>
-
-            <div class="classes-list" id="classesList">
-                <!-- Classes will be populated here by backend -->
-                <!-- Example structure for frontend reference: -->
-
-                <div th:each="cls : ${classe}" class="class-item" th:onclick="'selectClass(\\'' + ${cls} + \\)''">
-                    <div class="class-info">
-                        <div class="class-name" th:text="${cls}"></div>
-                        <div class="class-details">Level info here</div>
-                    </div>
-                    <div class="class-count">45</div>
-                </div>
-
-            </div>
-        </div>
-    </div>
     <div class="user-info">
         <div class="user-avatar" th:text="${currentUser.substring(0,1).toUpperCase()}">J</div>
         <span th:text="${currentUser}">Username</span>
@@ -1252,19 +1477,58 @@
 <!--            <button class="action-btn btn-primary" onclick="performSearch()">-->
 <!--                <span>🔍</span> Search Student-->
 <!--            </button>-->
-            <button class="action-btn btn-secondary" onclick="showRandomStudent()">
-                <span>🎲</span> Random Student
-            </button>
+<!--            <button class="action-btn btn-secondary" onclick="showRandomStudent()">-->
+<!--                <span>🎲</span> Random Student-->
+<!--            </button>-->
         <div class="dropdown">
-            <button class="action-btn btn-secondary" onclick="toggleSpecialtyDropdown()">
-                <span>📋</span> Browse All
-            </button>
+<!--            <button class="action-btn btn-secondary" onclick="toggleSpecialtyDropdown()">-->
+<!--                <span>📋</span> Browse All-->
+<!--            </button>-->
             <div class="dropdown-menu" id="specialtyDropDown">
                 <div class="menu-title">
                     <span>🎓</span> Available Specialties
                     <!-- specialties will be populated here -->
                 </div>
                 <div class="menu-subtitle">Select a class to view students</div>
+            </div>
+
+            <div class="classes-dropdown">
+                <button class="classes-btn" id="classesBtn" onclick="toggleClassesDropdown()">
+                    <span>📚</span> Classes
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+                <div class="classes-menu" id="classesMenu">
+                    <div class="menu-header">
+                        <div class="menu-title">
+                            <span>🎓</span> Available Classes
+                        </div>
+                        <div class="menu-subtitle">Select a class to view students</div>
+                    </div>
+
+                    <div class="classes-search">
+                        <input
+                                type="text"
+                                class="classes-search-input"
+                                placeholder="Search classes..."
+                                id="classSearchInput"
+                                oninput="filterClasses()"
+                        >
+                    </div>
+
+                    <div class="classes-list" id="classesList">
+                        <!-- Classes will be populated here by backend -->
+                        <!-- Example structure for frontend reference: -->
+
+                        <div th:each="cls : ${classe}" class="class-item" th:onclick="'selectClass(\\'' + ${cls} + \\)''">
+                            <div class="class-info">
+                                <div class="class-name" th:text="${cls}"></div>
+                                <div class="class-details">Level info here</div>
+                            </div>
+                            <div class="class-count">45</div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
         </div>
@@ -1362,8 +1626,6 @@
 
 
             <div class="ministere">MINISTERE DE L'ENSEIGNEMENT SUPERIEUR</div>
-
-
             <img src="../../images/Logo Institut USJ INGENIEUR%20(1).png" class="logoetu" alt="Logo institut" />
 
             <img src="../../images/drapeau+band.png" class="drapeau" alt="Logo institut" />
@@ -1373,18 +1635,37 @@
             </div>
             <div class="annee">Année Académique 2025-2026</div>
 
-            <img src="../../images/cadre.png" class="cadre-photo">
+            <img src="../../images/cadre.png" class="cadre-photo" id="cadre-photo">
+            <img id="cardPhoto" class="student-photo" src="" alt="Photo etudiant">
 
-
-
-            <div  class="name"><p><span id="cardNom"></span></p></div>
+            <img src="../../images/logo.png" class="logo-fond">
+            <div class="name-class">
+                <span class="name" id="cardNom"></span>
+                <span class="class" id="cardClass1"></span>
+            </div>
 
             <div class="infos">
-                <p>Matricule : <span id="cardMatricule"></span></p>
-                <p>Né(e) le : <span id="cardDateNaissance">--/--/----</span><span>à</span></p>
-                <p>Spécialité : <span id="cardClasse"></span></p>
-                <p>Sexe : <span id="cardSexe">----</span></p>
+                <div class="info-item">
+                    <span class="info-label">Matricule :</span>
+                    <span class="info-label">Né(e) le :</span>
+                    <span class="info-label">Spécialité :</span>
+                    <span class="info-label">Sexe :</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-separator" id="cardMatricule">:</span>
+                    <div style="width: 160px;"> <span class="info-separator" id="cardDateNaissance">: </span> à  <span id="cardLieuNaissance"> </span> </div>
+                    <span class="info-separator" id="cardClasse">:</span>
+                    <span class="info-separator" id="cardSexe">:</span>
+                </div>
             </div>
+            <div class="info-item">
+                <!-- Inserer les valeurs ici -->
+                <span class="info-value"></span>
+                <span class="info-value"><!-- Inserer le lieu de naissance ici --></span>
+                <span class="info-value"></span>
+                <span class="info-value"></span>
+            </div>
+        </div>
 
             <!-- QR code -->
             <img src="../../images/Code QR.jpg" class="qr" alt="QR Code" />
@@ -1399,8 +1680,7 @@
     </div>
 </div>
 
-<div id="pdfCardsContainer"
-     style="display: block"></div>
+<div id="pdfCardsContainer"></div>
 
 
 </body>
@@ -1616,6 +1896,8 @@
     }
 
     function showStudentCardModal(student) {
+
+        console.log('hùizroimijrogzjegzeg6')
         const modal = document.getElementById('studentCardModal');
 
         // Check if modal exists
@@ -1634,15 +1916,19 @@
         if (cardNom) {
             cardNom.textContent = `${student.prenom || ''} ${student.nom || ''}`.trim();
         }
+        const cardClass1 = document.getElementById('cardClass1');
+        if (cardClass1) {
+            cardClass1.textContent = student.classe || 'N/A';
+        }
 
         const cardDateNaissance = document.getElementById('cardDateNaissance');
         if (cardDateNaissance) {
-            cardDateNaissance.textContent = student.dateNaissance || '--/--/----';
+            cardDateNaissance.textContent = student.dateDeNaissance || '--/--/----';
         }
 
         const cardLieuNaissance = document.getElementById('cardLieuNaissance');
         if (cardLieuNaissance) {
-            cardLieuNaissance.textContent = student.lieuNaissance || '----';
+            cardLieuNaissance.textContent = student.lieuDeNaissance || '----';
         }
 
         const cardClasse = document.getElementById('cardClasse');
@@ -1659,21 +1945,21 @@
         const photoElement = document.getElementById('cardPhoto');
         const photoPlaceholder = document.getElementById('cardPhotoPlaceholder');
 
-        if (photoElement && photoPlaceholder) {
+        if (photoElement) {
+            console.log(photoElement)
             if (student.photo) {
+                console.log("photo de letudiant " + student.photo)
                 photoElement.src = student.photo;
-                photoElement.style.display = 'block';
-                photoPlaceholder.style.display = 'none';
             } else {
-                photoElement.style.display = 'none';
-                photoPlaceholder.style.display = 'flex';
-                photoPlaceholder.textContent = `${(student.prenom || '').charAt(0)}${(student.nom || '').charAt(0)}`.toUpperCase() || '👤';
+                console.log("photo de letudiant " + student.photo)
+                photoElement.src = "/images/img.png";
             }
         }
 
         // Show modal
         modal.style.display = 'block';
     }
+
     function closeStudentModal() {
         document.getElementById('studentCardModal').style.display = 'none';
     }
@@ -1739,7 +2025,7 @@
     }
 
     // Close modal when clicking outside
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         const modal = document.getElementById('studentModal');
         if (event.target === modal) {
             closeModal();
@@ -1835,20 +2121,20 @@
     // New function to delete student
     function deleteStudent(matricule) {
         if (confirm('Are you sure you want to delete this student? This action cannot be undone.')) {
-            fetch(`/api/student/${matricule}`, {
+            fetch(`/api/etudiant/student/${matricule}`, {
                 method: 'DELETE'
             })
                 .then(response => {
-                    if (!response.ok) {
+                    if (response.ok) {
+                        alert('Student deleted successfully');
+                        // Refresh modal/class list after deletion
+                        const currentClass = document.getElementById('studentsModalTitle').textContent.replace('Students in ', '');
+                        selectClass(currentClass);
+                    } else if (response.status === 404) {
+                        alert('Student not found.');
+                    } else {
                         throw new Error('Failed to delete student');
                     }
-                    return response.json();
-                })
-                .then(result => {
-                    alert('Student deleted successfully');
-                    // Refresh the current modal view
-                    const currentClass = document.getElementById('studentsModalTitle').textContent.replace('Students in ', '');
-                    selectClass(currentClass);
                 })
                 .catch(error => {
                     console.error('Error deleting student:', error);
@@ -1856,6 +2142,7 @@
                 });
         }
     }
+
 
     // New function to generate PDF for individual student
     function generateStudentPDF(matricule) {
@@ -1914,7 +2201,7 @@
     }
 
     // Update the window.onclick to handle the new modal
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         const studentModal = document.getElementById('studentModal');
         const studentsModal = document.getElementById('studentsModal');
 
@@ -1926,7 +2213,7 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         loadClasses();
     });
 
@@ -2048,29 +2335,43 @@
         document.getElementById('specialtyModal').style.display = 'none';
     }
 
-    function exportAllCardsPDF() {
+    async function exportAllCardsPDF() {
         const container = document.getElementById("pdfCardsContainer");
         container.innerHTML = ''; // Clear previous cards
 
         currentStudents.forEach(student => {
             const cardHTML = `
-        <div class="carte" style="width: 350px; height: 550px; position: relative; margin: 10px auto; page-break-inside: avoid;">
-            <div class="ministere">MINISTERE DE L'ENSEIGNEMENT SUPERIEUR</div>
-            <img src="../../images/Logo Institut USJ INGENIEUR%20(1).png" class="logoetu" alt="Logo institut" />
-            <img src="../../images/drapeau+band.png" class="drapeau" alt="Drapeau" />
-            <div class="specialite">${student.classe || 'Classe inconnue'}</div>
-            <div class="annee">Année Académique 2025-2026</div>
-            <img src="../../images/cadre.png" class="cadre-photo">
-            <div class="name"><p>${student.prenom || ''} ${student.nom || ''}</p></div>
-            <div class="infos">
-                <p>Matricule : ${student.matricule}</p>
-                <p>Né(e) le : ${student.dateNaissance || '--/--/----'}</p>
-                <p>Spécialité : ${student.classe}</p>
-                <p>Sexe : ${student.sexe || '----'}</p>
+        <div class="carte pdf-mode">
+            <div class="ministere2">MINISTERE DE L'ENSEIGNEMENT SUPERIEUR</div>
+            <img src="../../images/Logo Institut USJ INGENIEUR%20(1).png" class="logoetu2" alt="Logo institut" />
+            <img src="../../images/drapeau+band.png" class="drapeau2" alt="Drapeau" />
+            <div class="specialite2">GENIE INFORMATIQUE</div>
+            <div class="annee2">Année Académique 2025-2026</div>
+            <img src="../../images/cadre.png" class="cadre-photo2">
+            <img src="${student.photo}" class="student-photo2" alt="Photo">
+
+
+            <img src="../../images/logo.png" class="logo-fond2">
+            <div class="name-class2">
+                <div class="name2">${student.prenom || ''} ${student.nom || ''}</div>
+                <div class="class2">${student.classe}</div>
             </div>
-            <img src="../../images/Code QR.jpg" class="qr" alt="QR Code" />
-            <div class="signature">LE DIRECTEUR</div>
-            <div class="footer">CARTE D'ETUDIANT</div>
+            <div class="infos2">
+                <div class="info-line"><span>Matricule : </span> ${student.matricule}</div>
+                <div class="info-line" style="width: 100%;">
+                <span>Né(e) le : </span>
+                <span > ${student.dateDeNaissance}</span>
+                à <span> ${student.lieuDeNaissance}</span>
+                </div>
+
+<!--                <div class="info-line" style="width: 100%;"> <span> Né(e) le : </span> ${student.dateDeNaissance || '--/--/----'} à ${student.lieuDeNaissance} </div>-->
+                <div class="info-line"><span>Spécialité :  </span>${student.classe}</div>
+                <div class="info-line"><span>Sexe : </span>${student.sexe || '----'}</div>
+            </div>
+            <img src="../../images/Code QR.jpg" class="qr2" alt="QR Code" />
+            <div class="signature2">LE DIRECTEUR</div>
+            <div class="footer2">CARTE D'ETUDIANT</div>
+            </div>
         </div>
         `;
             container.innerHTML += cardHTML;
@@ -2078,15 +2379,20 @@
 
         document.getElementById('pdfCardsContainer').style.visibility = 'visible';
 
-        html2pdf().from(container).set({
+        const isSingleCard = currentStudents.length == 1;
+
+        await html2pdf().from(container).set({
             margin: 0,
             filename: `cartes_${new Date().toISOString()}.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            image: {type: 'jpeg', quality: 0.98},
+            html2canvas: {scale: isSingleCard ? 3 : 2, useCORS: true, scrollY: 0},
+            jsPDF: {unit: 'px', format: [794, 1124], orientation: 'portrait'}
         }).save();
-    }
 
+        document.getElementById('pdfCardsContainer').style.display = 'none';
+        window.location.reload()
+
+    }
 
 
 </script>

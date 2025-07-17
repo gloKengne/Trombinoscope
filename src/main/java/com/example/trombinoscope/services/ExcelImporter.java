@@ -12,6 +12,8 @@ import java.text.Normalizer;
 
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -89,11 +91,16 @@ public class ExcelImporter {
                         }
 
                         // Parse date
-                        Date dateNaissance = null;
+                        LocalDate dateNaissance = null;
+
                         if (!dateStr.isEmpty()) {
                             try {
-                                dateNaissance = dateFormat.parse(dateStr);
+
+                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                                dateNaissance = LocalDate.parse(dateStr, formatter);
                             } catch (Exception e) {
+
+
                                 result.addError("Row " + (rowIndex + 1) + " in sheet '" + sheetName + "': Invalid date format '" + dateStr + "'. Expected dd/MM/yyyy");
                                 continue;
                             }

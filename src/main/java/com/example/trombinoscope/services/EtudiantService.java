@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +17,7 @@ public class EtudiantService {
     @Autowired
     private EtudiantRepository etudiantRepository;
 
-    public Etudiant createEtudiant(String matricule, String nom, String prenom, Date dateDeNaissance, String lieuDeNaissance, Etudiant.sexe sexe, Etudiant.classe classe) {
+    public Etudiant createEtudiant(String matricule, String nom, String prenom, LocalDate dateDeNaissance, String lieuDeNaissance, Etudiant.sexe sexe, Etudiant.classe classe) {
         if(etudiantRepository.existsById(matricule)){
             throw new RuntimeException("matricule exists");
         }

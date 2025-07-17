@@ -140,4 +140,16 @@ public class EtudiantController {
         return ResponseEntity.ok().headers(headers).body(pdfBytes);
     }
 
+    @DeleteMapping("/student/{matricule}")
+    public ResponseEntity<Void> deleteEtudiantByMatricule(@PathVariable String matricule) {
+        Optional<Etudiant> etudiant = etudiantRepository.findById(matricule);
+        if (etudiant.isPresent()) {
+            etudiantRepository.delete(etudiant.get());
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 }

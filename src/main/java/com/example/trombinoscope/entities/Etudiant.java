@@ -1,11 +1,13 @@
     package com.example.trombinoscope.entities;
 
+    import com.fasterxml.jackson.annotation.JsonFormat;
     import jakarta.persistence.*;
     import lombok.AllArgsConstructor;
     import lombok.Getter;
     import lombok.NoArgsConstructor;
     import lombok.Setter;
 
+    import java.time.LocalDate;
     import java.util.Date;
 
     @Entity
@@ -19,7 +21,8 @@
 
         private String nom;
         private String prenom;
-        private Date dateDeNaissance;
+        @JsonFormat(pattern = "dd/MM/yyyy")
+        private LocalDate dateDeNaissance;
         private String lieuDeNaissance;
 
         @Enumerated(EnumType.STRING)
@@ -42,7 +45,11 @@
             this.prenom = prenom;
         }
 
-        public void setDateDeNaissance(Date dateDeNaissance) {
+        public LocalDate getDateDeNaissance() {
+            return dateDeNaissance;
+        }
+
+        public void setDateDeNaissance(LocalDate dateDeNaissance) {
             this.dateDeNaissance = dateDeNaissance;
         }
 
@@ -70,9 +77,7 @@
             return prenom;
         }
 
-        public Date getDateDeNaissance() {
-            return dateDeNaissance;
-        }
+
 
         public String getLieuDeNaissance() {
             return lieuDeNaissance;
@@ -92,7 +97,9 @@
 
         public enum classe{
             SRT5SSC, ISI5IL, ISI5MSI, SRT4, ISI4En, ISI4Fr, SRT3, ISI3En, ISI3Fr, GC3, En2, Fr2, En1, FrA1, FrB1;
-
-
         }
+
+        @Column(name = "photo")
+        private String photo;
+
     }

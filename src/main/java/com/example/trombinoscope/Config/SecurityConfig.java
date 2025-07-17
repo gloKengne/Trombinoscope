@@ -49,7 +49,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authz -> authz
 //                        .requestMatchers("/**").permitAll()
-                        .requestMatchers("/", "/auth/register", "/auth/login", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/", "/auth/register", "/auth/login", "/css/**", "/js/**", "/images/**", "/api/import-excel").permitAll()
 //                        .requestMatchers("/").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
@@ -93,6 +93,8 @@ public class SecurityConfig {
 //                .exceptionHandling(exceptions -> exceptions
 //                        .accessDeniedPage("/access-denied")
 //                );
+        http.csrf(csrf -> csrf.disable());// TEMPORARY only for debug
+
 
         return http.build();
     }
