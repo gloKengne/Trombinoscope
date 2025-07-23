@@ -42,7 +42,6 @@ public class ExcelImporter {
                 throw new IllegalArgumentException("Unsupported file type: must be .xls or .xlsx");
             }
 
-
             int sheetCount = workbook.getNumberOfSheets();
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -59,6 +58,10 @@ public class ExcelImporter {
                 } catch (IllegalArgumentException e) {
                     System.out.println("Sheet name '" + sheetName + "' doesn't match any classe enum. Using first available classe or skipping...");
                     // You might want to set a default classe or skip this sheet
+                    for (Sheet sheett : workbook) {
+                        System.out.println("Found sheet: " + sheett.getSheetName());
+                    }
+
                     continue;
                 }
 

@@ -17,7 +17,7 @@ public class EtudiantService {
     @Autowired
     private EtudiantRepository etudiantRepository;
 
-    public Etudiant createEtudiant(String matricule, String nom, String prenom, LocalDate dateDeNaissance, String lieuDeNaissance, Etudiant.sexe sexe, Etudiant.classe classe) {
+    public Etudiant createEtudiant(String matricule, String nom, String prenom, LocalDate dateDeNaissance, String lieuDeNaissance, Etudiant.sexe sexe, Etudiant.classe classe, Etudiant.Specialitespe specialitespe) {
         if(etudiantRepository.existsById(matricule)){
             throw new RuntimeException("matricule exists");
         }
@@ -29,6 +29,7 @@ public class EtudiantService {
         etudiant.setLieuDeNaissance(lieuDeNaissance);
         etudiant.setSexe(sexe);
         etudiant.setClasse(classe);
+        etudiant.setSpecialitespe(specialitespe);
 
         return etudiantRepository.save(etudiant);
     }
@@ -79,4 +80,6 @@ public class EtudiantService {
             throw new RuntimeException("Invalid class name: " + classe);
         }
     }
+
+
 }

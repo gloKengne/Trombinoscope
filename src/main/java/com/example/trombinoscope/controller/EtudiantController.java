@@ -13,8 +13,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.io.ByteArrayOutputStream;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -29,13 +28,26 @@ public class EtudiantController {
     private TemplateEngine templateEngine;
 
     @GetMapping("/{matricule}")
-    public ResponseEntity<String> getEtudiant(@PathVariable String matricule) {
-        System.out.println("Matricule called with matricule: " + matricule);
+    @ResponseBody
+    public Map<String, Object> getEtudiantByMatricule(@PathVariable String matricule) {
         Optional<Etudiant> etudiant = etudiantRepository.findById(matricule);
-        if (etudiant.isPresent()) {
-            return ResponseEntity.ok(etudiant.get().toString());
-        }
-            return ResponseEntity.notFound().build();
+        if (etudiant.isEmpty()) return Collections.emptyMap();
+
+        System.out.println("specialiteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" + etudiant.get().getSpecialiteLabel());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("nom", etudiant.get().getNom());
+        data.put("prenom", etudiant.get().getPrenom());
+        data.put("matricule", etudiant.get().getMatricule());
+        data.put("classe", etudiant.get().getClasse());
+        data.put("photo", etudiant.get().getPhoto());
+        data.put("dateDeNaissance", etudiant.get().getDateDeNaissance());
+        data.put("lieuDeNaissance", etudiant.get().getLieuDeNaissance());
+        data.put("sexe", etudiant.get().getSexe());
+
+        data.put("specialiteLabel", etudiant.get().getSpecialiteLabel());
+
+        return data;
     }
 
     @GetMapping("/search2")

@@ -1264,13 +1264,13 @@
             position: absolute;
             left: 15px;
             bottom:106px;
-            font-size: 14px;
+            font-size: 13px;
             z-index: 1;
             display: grid;
             grid-template-columns: max-content min-content 1fr;
-            column-gap: 5px;
+            column-gap: 7px;
             align-items: baseline;
-            line-height: 21px;
+            line-height: 24px;
         }
 
         .infos2 {
@@ -1282,6 +1282,7 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
+            column-gap: 20px;
             align-items: baseline;
             line-height: 21px;
         }
@@ -1630,9 +1631,7 @@
 
             <img src="../../images/drapeau+band.png" class="drapeau" alt="Logo institut" />
 
-            <div class="specialite">
-                GENIE ELECTRIQUE
-            </div>
+            <div class="specialite"></div>
             <div class="annee">Année Académique 2025-2026</div>
 
             <img src="../../images/cadre.png" class="cadre-photo" id="cadre-photo">
@@ -1641,7 +1640,7 @@
             <img src="../../images/logo.png" class="logo-fond">
             <div class="name-class">
                 <span class="name" id="cardNom"></span>
-                <span class="class" id="cardClass1"></span>
+                <span class="class" id="cardClass1" data-classe="${student.classe}"></span>
             </div>
 
             <div class="infos">
@@ -1653,8 +1652,8 @@
                 </div>
                 <div class="info-item">
                     <span class="info-separator" id="cardMatricule">:</span>
-                    <div style="width: 160px;"> <span class="info-separator" id="cardDateNaissance">: </span> à  <span id="cardLieuNaissance"> </span> </div>
-                    <span class="info-separator" id="cardClasse">:</span>
+                    <div style="width: 250px;"> <span class="info-separator" id="cardDateNaissance">: </span> à  <span id="cardLieuNaissance"> </span> </div>
+                    <span class="info-separator" id="cardSpecialteSpe">:</span>
                     <span class="info-separator" id="cardSexe">:</span>
                 </div>
             </div>
@@ -1673,7 +1672,7 @@
             <div class="signature">LE DIRECTEUR</div>
 
             <!-- Pied de page -->
-            <div class="footer">CARTE D'ETUDIANT</div>
+            <div class="footer" id="footerr">CARTE D'ETUDIANT</div>
         </div>
             </div>
         </div>
@@ -1688,7 +1687,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script>
-
     // Excel file handling functions
     function handleFileSelect(event) {
         const file = event.target.files[0];
@@ -1858,6 +1856,74 @@
         suggestionsDiv.style.display = 'none';
     }
 
+    function applySpecialtyAndColorToCards(container = document) {
+        if (!container) {
+            console.warn('No container provided to applySpecialtyAndColorToCards');
+            return;
+        }
+        console.log('entered container', container);
+
+        const classConfig = {
+            'Ingenieur2En': { specialty: 'TRONC COMMUN', color: '#3F945A' },
+            'Ingenieur2Fr': { specialty: 'TRONC COMMUN', color: '#3F945A' },
+            'Ingenieur1En':  { specialty: 'TRONC COMMUN', color: '#3F945A' },
+            'Ingenieur1AFr': { specialty: 'TRONC COMMUN', color: '#3F945A' },
+            'Ingenieur1BFr': { specialty: 'TRONC COMMUN', color: '#3F945A' },
+
+            'Ingenieur3ISIEn': { specialty: 'GENIE INFORMATIQUE', color: '#1467C1' },
+            'Ingenieur3ISIFr': { specialty: 'GENIE INFORMATIQUE', color: '#1467C1' },
+            'Ingenieur3SRT': { specialty: 'GENIE INFORMATIQUE', color: '#1467C1' },
+            'Ingenieur4ISIFr': { specialty: 'GENIE INFORMATIQUE', color: '#1467C1' },
+            'Ingenieur4ISIEn': { specialty: 'GENIE INFORMATIQUE', color: '#1467C1' },
+            'Ingenieur5MSI': { specialty: 'GENIE INFORMATIQUE', color: '#1467C1' },
+            'Ingenieur5IL': { specialty: 'GENIE INFORMATIQUE', color: '#1467C1' },
+            'Ingenieur5SSC': { specialty: 'GENIE INFORMATIQUE', color: '#1467C1' },
+            'Ingenieur4SRT': { specialty: 'GENIE INFORMATIQUE', color: '#1467C1' },
+
+            'Ingenieur3GC': { specialty: 'GENIE CIVIL', color: '#FDD300' },
+            'Ingenieur4GC': { specialty: 'GENIE CIVIL', color: '#FDD300' },
+
+            'Ingenieur3GE': { specialty: 'GENIE ELECTRIQUE', color: '#74226B' },
+        };
+
+        const cards = container.querySelectorAll('.carte');
+        if (!cards || cards.length === 0) {
+            console.warn('No .carte elements found in container');
+            return;
+        }
+
+        cards.forEach(card => {
+            const classeElement = card.querySelector('.class') || card.querySelector('.class2');
+
+            if (!classeElement) return;
+
+            const classe = classeElement.dataset.classe || classeElement.textContent.trim();
+            const config = classConfig[classe];
+
+            // Set the specialty text
+            const specialtyElement = card.querySelector('.specialite') || card.querySelector('.specialite2');
+            console.log('specialty:', specialtyElement.textContent);
+
+
+            if (specialtyElement && config?.specialty) {
+                specialtyElement.textContent = config.specialty;
+            }
+            console.log("card name is: " + classe);
+            console.log('Config for this classe:', config);
+
+
+
+            // Set the footer color
+            const footer = card.querySelector('.footer') || card.querySelector('.footer2');
+            if (footer && config?.color) {
+                footer.style.backgroundColor = config.color;
+            }
+        });
+    }
+    document.addEventListener('DOMContentLoaded', applySpecialtyAndColorToCards);
+
+
+
     function selectStudent(matricule) {
         fetch(`/api/student/${matricule}`)
             .then(response => {
@@ -1868,7 +1934,7 @@
             })
             .then(student => {
                 showStudentsModal(student);
-                searchInput.value = `${student.prenom || ''} ${student.nom || ''}`.trim();
+                searchInput.value = ` ${student.nom || ''} ${student.prenom || ''}`.trim();
                 hideSuggestions();
             })
             .catch(error => {
@@ -1897,7 +1963,6 @@
 
     function showStudentCardModal(student) {
 
-        console.log('hùizroimijrogzjegzeg6')
         const modal = document.getElementById('studentCardModal');
 
         // Check if modal exists
@@ -1914,11 +1979,12 @@
 
         const cardNom = document.getElementById('cardNom');
         if (cardNom) {
-            cardNom.textContent = `${student.prenom || ''} ${student.nom || ''}`.trim();
+            cardNom.textContent = `${student.nom || ''} ${student.prenom || ''}`.trim();
         }
         const cardClass1 = document.getElementById('cardClass1');
         if (cardClass1) {
-            cardClass1.textContent = student.classe || 'N/A';
+            cardClass1.textContent = student.classeLabel || 'N/A';
+            cardClass1.setAttribute('data-classe', student.classe);
         }
 
         const cardDateNaissance = document.getElementById('cardDateNaissance');
@@ -1931,9 +1997,14 @@
             cardLieuNaissance.textContent = student.lieuDeNaissance || '----';
         }
 
-        const cardClasse = document.getElementById('cardClasse');
-        if (cardClasse) {
-            cardClasse.textContent = student.classe || 'N/A';
+        const cardSpecialteSpe = document.getElementById('cardSpecialteSpe');
+        if (cardSpecialteSpe) {
+            // Try to get the label first, then fallback to enum name, then 'N/A'
+            const specialityText = student.specialiteLabel ||
+                (student.specialitespe ? student.specialitespe : 'N/A');
+            cardSpecialteSpe.textContent = specialityText;
+            console.log("Spécialité reçue:", student.specialitespe);
+            console.log("Spécialité label:", student.specialiteLabel);
         }
 
         const cardSexe = document.getElementById('cardSexe');
@@ -1947,14 +2018,25 @@
 
         if (photoElement) {
             console.log(photoElement)
-            if (student.photo) {
-                console.log("photo de letudiant " + student.photo)
-                photoElement.src = student.photo;
-            } else {
+            if (student.matricule) {
+                const photoPath = `/photos/${student.matricule.toLowerCase()}.jpg`;
+
+                console.log("photo de letudiant " + photoPath);
+// Try loading the image, fallback if it fails
+                photoElement.onerror = () => {
+                    photoElement.src = "/images/img.png"; // fallback image
+                };
+
+                photoElement.src = photoPath;
+
+                console.log("Trying photo: " + photoPath);            } else {
                 console.log("photo de letudiant " + student.photo)
                 photoElement.src = "/images/img.png";
             }
         }
+
+        applySpecialtyAndColorToCards(document.getElementById('studentCardModal'));
+
 
         // Show modal
         modal.style.display = 'block';
@@ -2083,10 +2165,10 @@
             <td>
                 <div class="student-info-cell">
                     <div class="student-avatar-small">
-                        ${(student.prenom || student.nom || 'N').charAt(0).toUpperCase()}
+                        ${(student.nom || student.prenom || 'N').charAt(0).toUpperCase()}
                     </div>
                     <div>
-                        <div class="student-name">${student.prenom || ''} ${student.nom || ''}</div>
+                        <div class="student-name">${student.nom || ''} ${student.prenom || ''}</div>
                         <div class="student-matricule">${student.matricule || ''}</div>
                     </div>
                 </div>
@@ -2291,11 +2373,12 @@
     }
 
     const specialties = {
-        "ISI": ["ISI5IL", "ISI5MSI", "ISI4En", "ISI4Fr", "ISI3En", "ISI3Fr"],
-        "SRT": ["SRT5SSC", "SRT4", "SRT3"],
-        "GC": ["GC3"],
-        "TCFrancophone": ["FrA1", "FrB1", "Fr2"],
-        "TCAnglophone": ["En1", "En2"]
+        "ISI": ["Ingenieur5IL", "Ingenieur5MSI", "Ingenieur4ISIEn", "Ingenieur4ISIFr", "Ingenieur3ISIEn", "Ingenieur3ISIFr"],
+        "SRT": ["Ingenieur5SSC", "Ingenieur4SRT", "Ingenieur3SRT"],
+        "GC": ["Ingenieur3GC", "Ingenieur4GC"],
+        "GE":  ["Ingenieur3GE"],
+        "TCFrancophone": ["Ingenieur1AFr", "Ingenieur1BFr", "Ingenieur2Fr"],
+        "TCAnglophone": ["Ingenieur1En", "Ingenieur2En"]
     };
 
     function toggleSpecialtyDropdown() {
@@ -2345,16 +2428,16 @@
             <div class="ministere2">MINISTERE DE L'ENSEIGNEMENT SUPERIEUR</div>
             <img src="../../images/Logo Institut USJ INGENIEUR%20(1).png" class="logoetu2" alt="Logo institut" />
             <img src="../../images/drapeau+band.png" class="drapeau2" alt="Drapeau" />
-            <div class="specialite2">GENIE INFORMATIQUE</div>
+            <div class="specialite2">SPECIALITE</div>
             <div class="annee2">Année Académique 2025-2026</div>
             <img src="../../images/cadre.png" class="cadre-photo2">
-            <img src="${student.photo}" class="student-photo2" alt="Photo">
+            <img id="cardPhoto" src="/photos/${student.matricule}.jpg" onerror="this.src='/images/img.png';" class="student-photo2" alt="Photo etudiant">
 
 
             <img src="../../images/logo.png" class="logo-fond2">
             <div class="name-class2">
-                <div class="name2">${student.prenom || ''} ${student.nom || ''}</div>
-                <div class="class2">${student.classe}</div>
+                <div class="name2">${student.nom || ''} ${student.prenom || ''}</div>
+                <div class="class2" data-classe="${student.classe}">${student.classeLabel}</div>
             </div>
             <div class="infos2">
                 <div class="info-line"><span>Matricule : </span> ${student.matricule}</div>
@@ -2365,7 +2448,7 @@
                 </div>
 
 <!--                <div class="info-line" style="width: 100%;"> <span> Né(e) le : </span> ${student.dateDeNaissance || '--/--/----'} à ${student.lieuDeNaissance} </div>-->
-                <div class="info-line"><span>Spécialité :  </span>${student.classe}</div>
+                <div class="info-line"><span>Spécialité :  </span>${student.specialiteLabel}</div>
                 <div class="info-line"><span>Sexe : </span>${student.sexe || '----'}</div>
             </div>
             <img src="../../images/Code QR.jpg" class="qr2" alt="QR Code" />
@@ -2376,6 +2459,7 @@
         `;
             container.innerHTML += cardHTML;
         });
+        applySpecialtyAndColorToCards(container);
 
         document.getElementById('pdfCardsContainer').style.visibility = 'visible';
 
@@ -2393,7 +2477,5 @@
         window.location.reload()
 
     }
-
-
 </script>
 </html>
